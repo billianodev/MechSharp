@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+    <PublishAot>true</PublishAot>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+		<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+    <Version>0.0.1-alpha</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\MainWindow.axaml.cs">
+      <DependentUpon>MainWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootDescriptor Include="Root.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
+    <PackageReference Include="Billiano.AutoLaunch" Version="0.0.1-alpha" />
+    <PackageReference Include="Billiano.NAudio" Version="1.1.0" />
+    <PackageReference Include="SharpHook" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+		<AvaloniaResource Include="Assets\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+		<Content Include="Assets\icon.ico" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<None Update="sounds\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="sounds\mouse\" />
+	</ItemGroup>
+
+</Project>
