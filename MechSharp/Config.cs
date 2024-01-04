@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -33,8 +34,9 @@ public class Config
 				}
 			}
 		}
-		catch
+		catch (Exception ex)
 		{
+			Debug.WriteLine(ex);
 		}
 		return result ?? new Config();
 	}
@@ -55,8 +57,9 @@ public class Config
 				JsonSerializer.Serialize(stream, this, ConfigContext.Default.Config);
 			}
 		}
-		catch
+		catch (Exception ex)
 		{
+			Debug.WriteLine(ex);
 		}
 	}
 }

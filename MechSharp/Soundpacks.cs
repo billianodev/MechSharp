@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -13,24 +14,24 @@ public class Soundpacks
     public static readonly string MouseBuiltInPath = Path.Combine(AppContext.BaseDirectory, "sounds", "mouse");
     public static readonly string MouseCustomPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "mousevibes_custom");
 
-    public static SoundpackInfo[] LoadKeypackInfos()
+    public static IEnumerable<SoundpackInfo> LoadKeypackInfos()
     {
         var directories = Enumerable.Concat(
             Directory.Exists(KeysBuiltInPath) ? Directory.EnumerateDirectories(KeysBuiltInPath) : [],
             Directory.Exists(KeysCustomPath) ? Directory.EnumerateDirectories(KeysCustomPath) : []
             );
 
-        return LoadAll(directories).DistinctBy(x => x.Id).ToArray();
+        return LoadAll(directories).ToArray();
     }
 
-    public static SoundpackInfo[] LoadMousepackInfo()
+    public static IEnumerable<SoundpackInfo> LoadMousepackInfo()
     {
 		var directories = Enumerable.Concat(
 			Directory.Exists(MouseBuiltInPath) ? Directory.EnumerateDirectories(MouseBuiltInPath) : [],
 			Directory.Exists(MouseCustomPath) ? Directory.EnumerateDirectories(MouseCustomPath) : []
 			);
 
-		return LoadAll(directories).DistinctBy(x => x.Id).ToArray();
+		return LoadAll(directories).ToArray();
     }
 
     private static IEnumerable<SoundpackInfo> LoadAll(IEnumerable<string> directories)
@@ -39,6 +40,8 @@ public class Soundpacks
         {
             if (SoundpackInfo.Load(directory, out var soundpack))
             {
+                Debug.WriteLine($"Loaded soundpack {soundpack} in {soundpack.Dir}");
+
                 yield return soundpack;
             }
         }

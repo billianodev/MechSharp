@@ -7,16 +7,9 @@
 
 ---
 
-MechSharp is an app that simulate mechanical\
-keyboard and is a rewrite of Mechvibes\
-that brings key up, random sounds\
-and aim to provides better performance
+MechSharp is an app that simulate mechanical keyboard and is a rewrite of Mechvibes that brings key up, random sounds and aim to provides better performance
 
-Even though MechSharp is programmed using .NET C#\
-which not really the best for performance,\
-most release might have AOT tag\
-in which the performance is comparable to other\
-native programming language such as C, C++.
+Even though MechSharp is programmed using .NET C# which not really the best for performance,most release might have AOT tag in which the performance is comparable to other native programming language such as C, C++.
 
 ---
 
@@ -30,10 +23,7 @@ _No need to install anything!_
 
 ### Migrating from Mechvibes or Mechvibes++
 
-If you had use Mechvibes or Mechvibes++ before,\
-MechSharp is designed to provides compatibility for both and\
-most soundpack from both should be compatible with MechSharp\
-for further info see the comparison part below.
+If you had use Mechvibes or Mechvibes++ before, MechSharp is designed to provides compatibility for both and most soundpack from both should be compatible with MechSharp for further info see the comparison part below.
 
 ---
 

@@ -8,6 +8,7 @@ using MechSharp.Utilities;
 using MechSharp.Views;
 using SharpHook;
 using SharpHook.Native;
+using System.Diagnostics;
 
 namespace MechSharp.ViewModels;
 
@@ -51,7 +52,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 			throw;
 		}
 	}
@@ -83,7 +84,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			if (info.Dir == _config.Mousepack)
 			{
 				_window.MousepackSelector.SelectedItem = info;
-				break;
 			}
 		}
 
@@ -99,7 +99,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		_config.Save();
 	}
 
-	public SoundpackInfo[] LoadKeypackInfos()
+	public IEnumerable<SoundpackInfo> LoadKeypackInfos()
 	{
 		try
 		{
@@ -109,12 +109,12 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 		}
 		return [];
 	}
 
-	public SoundpackInfo[] LoadMousepackInfos()
+	public IEnumerable<SoundpackInfo> LoadMousepackInfos()
 	{
 		try
 		{
@@ -124,7 +124,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 		}
 		return [];
 	}
@@ -146,7 +146,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Debug.WriteLine(ex);
 			}
 		});
 	}
@@ -168,7 +168,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex);
+				Debug.WriteLine(ex);
 			}
 		});
 	}
@@ -241,7 +241,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 		}
 	}
 
@@ -269,7 +269,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 		}
 	}
 
@@ -286,7 +286,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 		}
 	}
 
@@ -303,7 +303,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 		}
 	}
 	#endregion

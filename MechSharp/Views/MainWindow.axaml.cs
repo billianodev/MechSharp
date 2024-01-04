@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using MechSharp.ViewModels;
 
@@ -38,7 +39,7 @@ public partial class MainWindow : Window
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine(ex);
+			Debug.WriteLine(ex);
 		}
 	}
 
