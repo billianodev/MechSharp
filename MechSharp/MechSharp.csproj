@@ -4,7 +4,7 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFrameworks>net8.0-windows</TargetFrameworks>
 		<Nullable>enable</Nullable>
-    <PublishAot>true</PublishAot>
+    <PublishTrimmed>true</PublishTrimmed>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
 		<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
@@ -26,7 +26,6 @@
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
     <PackageReference Include="Billiano.AutoLaunch" Version="0.0.1-alpha" />
     <PackageReference Include="Billiano.NAudio" Version="2.0.1" />
-    <PackageReference Include="LibVLCSharp" Version="3.8.2" />
     <PackageReference Include="SharpHook" Version="5.2.0" />
   </ItemGroup>
 

@@ -9,8 +9,6 @@
 
 MechSharp is an app that simulate mechanical keyboard and is a rewrite of Mechvibes that brings key up, random sounds and aim to provides better performance
 
-Even though MechSharp is programmed using .NET C# which not really the best for performance, most release might have AOT label in which the performance is comparable to other native programming language such as C, C++.
-
 ---
 
 ## How to use
@@ -37,10 +35,10 @@ _RAM: 16 GB_
 
 ||MechSharp|Mechvibes|Mechvibes++|
 |-|-|-|-|
-|Intaller size|__30+ MB__|70 MB|70 MB|
-|Actual size|__55-80 MB__|160+ MB|160+ MB|
-|Memory usage|__50-70 MB__|90-110+ MB|300+ MB|
-|CPU usage|__< 1%__|3-7%|3-10%|
+|Intaller size|__45 MB__|70 MB|70 MB|
+|Actual size|__80 MB__|160+ MB|160+ MB|
+|Memory usage|__50 MB__|90-110+ MB|300+ MB|
+|CPU usage|__< 3%__|3-7%|3-10%|
 
 👑 __Overall MechSharp__
 
