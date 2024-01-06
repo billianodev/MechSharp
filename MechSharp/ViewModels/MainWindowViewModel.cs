@@ -18,93 +18,86 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public bool IsKeyDown { get; private set; }
 
-	private readonly App _app;
-	private readonly MainWindow _window;
+	private readonly App app;
+	private readonly MainWindow window;
 
-	private readonly StartupManager _startupManager;
+	private readonly StartupManager startupManager;
 	
-	private readonly AudioEngine _audioEngine;
-	private readonly SimpleGlobalHook _hook;
-	private readonly HashSet<KeyCode> _pressedKeys;
+	private readonly AudioEngine audioEngine;
+	private readonly SimpleGlobalHook hook;
+	private readonly HashSet<KeyCode> pressedKeys;
 
-	private readonly Config _config;
-	private Soundpack? _keypack;
-	private Soundpack? _mousepack;
+	private readonly Config config;
+	private Soundpack? keypack;
+	private Soundpack? mousepack;
 
 	public MainWindowViewModel(App app, MainWindow window)
 	{
-		try
-		{
-			_app = app;
-			_window = window;
+		this.app = app;
+		this.window = window;
 
-			_startupManager = new StartupManager();
+		startupManager = new();
 
-			_audioEngine = new AudioEngine();
-			_hook = new SimpleGlobalHook(true);
-			_hook.KeyPressed += Hook_KeyPressed;
-			_hook.KeyReleased += Hook_KeyReleased;
-			_hook.MousePressed += Hook_MousePressed;
-			_hook.MouseReleased += Hook_MouseReleased;
-			_pressedKeys = [];
+		audioEngine = new();
+		hook = new(true);
+		hook.KeyPressed += Hook_KeyPressed;
+		hook.KeyReleased += Hook_KeyReleased;
+		hook.MousePressed += Hook_MousePressed;
+		hook.MouseReleased += Hook_MouseReleased;
+		pressedKeys = [];
 
-			_config = Config.Load();
-		}
-		catch (Exception ex)
-		{
-			Debug.WriteLine(ex);
-			throw;
-		}
+		config = Config.Load();
 	}
 
 	public void Load()
 	{
-		var keypacks = LoadKeypackInfos();
-		var mousepacks = LoadMousepackInfos();
+		IEnumerable<SoundpackInfo> keypacks = LoadKeypackInfos();
+		IEnumerable<SoundpackInfo> mousepacks = LoadMousepackInfos();
 
-		_window.KeypackVolumeSlider.Value = _config.KeypackVolume;
-		_window.MousepackVolumeSlider.Value = _config.MousepackVolume;
-		_window.MuteCheckBox.IsChecked = _config.IsMuteEnabled;
-		_window.KeypackCheckBox.IsChecked = _config.IsKeypackEnabled;
-		_window.KeyUpCheckBox.IsChecked = _config.IsKeyUpEnabled;
-		_window.MousepackCheckBox.IsChecked = _config.IsMousepackEnabled;
-		_window.RandomCheckBox.IsChecked = _config.IsRandomEnabled;
+		window.KeypackVolumeSlider.Value = config.KeypackVolume;
+		window.MousepackVolumeSlider.Value = config.MousepackVolume;
+		window.MuteCheckBox.IsChecked = config.IsMuteEnabled;
+		window.KeypackCheckBox.IsChecked = config.IsKeypackEnabled;
+		window.KeyUpCheckBox.IsChecked = config.IsKeyUpEnabled;
+		window.MousepackCheckBox.IsChecked = config.IsMousepackEnabled;
+		window.RandomCheckBox.IsChecked = config.IsRandomEnabled;
 
-		foreach (var info in keypacks)
+		foreach (SoundpackInfo info in keypacks)
 		{
-			if (info.Dir == _config.Keypack)
+			if (info.Dir == config.Keypack)
 			{
-				_window.KeypackSelector.SelectedItem = info;
+				window.KeypackSelector.SelectedItem = info;
+				break;
+			}
+		}
+		
+		foreach (SoundpackInfo info in mousepacks)
+		{
+			if (info.Dir == config.Mousepack)
+			{
+				window.MousepackSelector.SelectedItem = info;
 				break;
 			}
 		}
 
-		foreach (var info in mousepacks)
-		{
-			if (info.Dir == _config.Mousepack)
-			{
-				_window.MousepackSelector.SelectedItem = info;
-			}
-		}
-
-		_window.StartupCheckBox.IsEnabled = _startupManager != null;
-		_window.StartupCheckBox.IsChecked = _startupManager?.Get();
-		_hook.RunAsync();
+		window.StartupCheckBox.IsEnabled = startupManager != null;
+		window.StartupCheckBox.IsChecked = startupManager?.Get();
+		hook.RunAsync();
 	}
 
 	public void Save()
 	{
-		_config.Keypack = _keypack?.Info.Dir;
-		_config.Mousepack = _mousepack?.Info.Dir;
-		_config.Save();
+		config.Keypack = keypack?.Info.Dir;
+		config.Mousepack = mousepack?.Info.Dir;
+		config.Save();
 	}
 
 	public IEnumerable<SoundpackInfo> LoadKeypackInfos()
 	{
 		try
 		{
-			var keypacks = Soundpacks.LoadKeypackInfos();
-			_window.KeypackSelector.ItemsSource = keypacks;
+			IEnumerable<SoundpackInfo> keypacks = Soundpacks.LoadKeypackInfos();
+			window.KeypackSelector.ItemsSource = keypacks;
 			return keypacks;
 		}
 		catch (Exception ex)
@@ -118,8 +111,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		try
 		{
-			var mousepacks = Soundpacks.LoadMousepackInfo();
-			_window.MousepackSelector.ItemsSource = mousepacks;
+			IEnumerable<SoundpackInfo> mousepacks = Soundpacks.LoadMousepackInfos();
+			window.MousepackSelector.ItemsSource = mousepacks;
 			return mousepacks;
 		}
 		catch (Exception ex)
@@ -131,10 +124,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public void LoadKeypack(SoundpackInfo? info)
 	{
-		if (!_config.IsKeypackEnabled || info == null)
+		if (!config.IsKeypackEnabled || info == null)
 		{
-			_keypack = null;
-			_window.KeypackSelector.SelectedItem = null;
+			keypack = null;
+			window.KeypackSelector.SelectedItem = null;
 			return;
 		}
 
@@ -142,7 +135,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		{
 			try
 			{
-				_keypack = Soundpack.LoadKeypack(info, _audioEngine.WaveFormat, _config.IsKeyUpEnabled);
+				keypack = Soundpack.LoadKeypack(info, audioEngine.WaveFormat, config.IsKeyUpEnabled);
 			}
 			catch (Exception ex)
 			{
@@ -153,10 +146,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public void LoadMousepack(SoundpackInfo? info)
 	{
-		if (!_config.IsMousepackEnabled || info == null)
+		if (!config.IsMousepackEnabled || info == null)
 		{
-			_mousepack = null;
-			_window.MousepackSelector.SelectedItem = null;
+			mousepack = null;
+			window.MousepackSelector.SelectedItem = null;
 			return;
 		}
 
@@ -164,7 +157,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		{
 			try
 			{
-				_mousepack = Soundpack.LoadMousepack(info, _audioEngine.WaveFormat);
+				mousepack = Soundpack.LoadMousepack(info, audioEngine.WaveFormat);
 			}
 			catch (Exception ex)
 			{
@@ -175,68 +168,71 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public void SetKeypackVolume(double value)
 	{
-		_config.KeypackVolume = (float)value;
+		config.KeypackVolume = (float)value;
 	}
 
 	public void SetMousepackVolume(double value)
 	{
-		_config.MousepackVolume = (float)value;
+		config.MousepackVolume = (float)value;
 	}
 
 	public void ToggleMute(bool value)
 	{
-		_config.IsMuteEnabled = value;
-		_pressedKeys.Clear();
+		config.IsMuteEnabled = value;
+		pressedKeys.Clear();
 	}
 
 	public void ToggleKeypack(bool value)
 	{
-		_config.IsKeypackEnabled = value;
-		_pressedKeys.Clear();
-		LoadKeypack(_keypack?.Info);
+		config.IsKeypackEnabled = value;
+		pressedKeys.Clear();
+		LoadKeypack(keypack?.Info);
 	}
 
 	public void ToggleKeyUp(bool value)
 	{
-		_config.IsKeyUpEnabled = value;
-		LoadKeypack(_keypack?.Info);
+		config.IsKeyUpEnabled = value;
+		LoadKeypack(keypack?.Info);
 	}
 
 	public void ToggleRandom(bool value)
 	{
-		_config.IsRandomEnabled = value;
+		config.IsRandomEnabled = value;
 	}
 
 	public void ToggleMousepack(bool value)
 	{
-		_config.IsMousepackEnabled = value;
-		LoadMousepack(_mousepack?.Info);
+		config.IsMousepackEnabled = value;
+		LoadMousepack(mousepack?.Info);
 	}
 
 	public void ToggleStartup(bool value)
 	{
-		_startupManager.Set(value);
+		startupManager.Set(value);
 	}
 
 	#region Hook Callback
 	private void Hook_KeyPressed(object? sender, KeyboardHookEventArgs e)
 	{
-		if (_config.IsMuteEnabled || !_config.IsKeypackEnabled) return;
-
-		if (!_pressedKeys.Add(e.Data.KeyCode)) return;
-
+		if (config.IsMuteEnabled || !config.IsKeypackEnabled)
+		{
+			return;
+		}
+		if (!pressedKeys.Add(e.Data.KeyCode))
+		{
+			return;
+		}
 		if (!IsKeyDown)
 		{
 			IsKeyDown = true;
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsKeyDown)));
+			PropertyChanged?.Invoke(this, new(nameof(IsKeyDown)));
 		}
-
 		try
 		{
-			var key = MechvibesMapper.MapKeyCode(e.Data.KeyCode, _config.IsRandomEnabled);
-			if (key != null && _keypack?.TryGetValue(key, out var wave) == true)
+			int key = MechvibesKey.Map(e.Data.KeyCode, config.IsRandomEnabled);
+			if (key != MechvibesKey.MkNone && keypack?.TryGetValue(key, out SampleCache? sample) == true)
 			{
-				_audioEngine.Play(wave, _config.KeypackVolume);
+				audioEngine.Play(sample, config.KeypackVolume);
 			}
 		}
 		catch (Exception ex)
@@ -247,24 +243,28 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	private void Hook_KeyReleased(object? sender, KeyboardHookEventArgs e)
 	{
-		if (_config.IsMuteEnabled || !_config.IsKeypackEnabled) return;
-
-		_pressedKeys.Remove(e.Data.KeyCode);
-
-		if (_pressedKeys.Count == 0 && IsKeyDown)
+		if (config.IsMuteEnabled || !config.IsKeypackEnabled)
 		{
-			IsKeyDown = false;
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsKeyDown)));
+			return;
 		}
 
-		if (!_config.IsKeyUpEnabled) return;
+		pressedKeys.Remove(e.Data.KeyCode);
 
+		if (pressedKeys.Count == 0 && IsKeyDown)
+		{
+			IsKeyDown = false;
+			PropertyChanged?.Invoke(this, new(nameof(IsKeyDown)));
+		}
+		if (!config.IsKeyUpEnabled)
+		{
+			return;
+		}
 		try
 		{
-			var key = MechvibesMapper.MapKeyCodeUp(e.Data.KeyCode, _config.IsRandomEnabled);
-			if (key != null && _keypack?.TryGetValue(key, out var wave) == true)
+			int key = -MechvibesKey.Map(e.Data.KeyCode, config.IsRandomEnabled);
+			if (key != MechvibesKey.MkNone && keypack?.TryGetValue(key, out SampleCache? sample) == true)
 			{
-				_audioEngine.Play(wave, _config.KeypackVolume);
+				audioEngine.Play(sample, config.KeypackVolume);
 			}
 		}
 		catch (Exception ex)
@@ -275,13 +275,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	private void Hook_MousePressed(object? sender, MouseHookEventArgs e)
 	{
-		if (_config.IsMuteEnabled || !_config.IsMousepackEnabled) return;
+		if (config.IsMuteEnabled || !config.IsMousepackEnabled)
+		{
+			return;
+		}
 		try
 		{
-			var key = MechvibesMapper.MapMouseButton(e.Data.Button);
-			if (key != null && _mousepack?.TryGetValue(key, out var wave) == true)
+			int key = MousevibesButton.Map(e.Data.Button);
+			if (key != MousevibesButton.MbNone && mousepack?.TryGetValue(key, out SampleCache? sample) == true)
 			{
-				_audioEngine.Play(wave, _config.MousepackVolume);
+				audioEngine.Play(sample, config.MousepackVolume);
 			}
 		}
 		catch (Exception ex)
@@ -292,13 +295,16 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	private void Hook_MouseReleased(object? sender, MouseHookEventArgs e)
 	{
-		if (_config.IsMuteEnabled || !_config.IsMousepackEnabled) return;
+		if (config.IsMuteEnabled || !config.IsMousepackEnabled)
+		{
+			return;
+		}
 		try
 		{
-			var key = MechvibesMapper.MapMouseButtonUp(e.Data.Button);
-			if (key != null && _mousepack?.TryGetValue(key, out var wave) == true)
+			int key = MousevibesButton.Map(e.Data.Button);
+			if (key != MousevibesButton.MbNone && mousepack?.TryGetValue(key, out SampleCache? sample) == true)
 			{
-				_audioEngine.Play(wave, _config.MousepackVolume);
+				audioEngine.Play(sample, config.MousepackVolume);
 			}
 		}
 		catch (Exception ex)

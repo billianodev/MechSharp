@@ -27,7 +27,7 @@ public partial class App : Application
 
 		if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
 		{
-			desktop.MainWindow = MainWindow = new MainWindow(this);
+			desktop.MainWindow = MainWindow = new(this);
 		}
 
 		base.OnFrameworkInitializationCompleted();

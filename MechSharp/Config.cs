@@ -28,7 +28,7 @@ public class Config
 		{
 			if (File.Exists(path))
 			{
-				using (var stream = File.OpenRead(path))
+				using (FileStream stream = File.OpenRead(path))
 				{
 					result = JsonSerializer.Deserialize(stream, ConfigContext.Default.Config);
 				}
@@ -41,18 +41,13 @@ public class Config
 		return result ?? new Config();
 	}
 
-	public static void Load(out Config config)
-	{
-		config = Load();
-	}
-
 	public void Save()
 	{
 		try
 		{
 			Directory.CreateDirectory(directory);
 
-			using (var stream = File.Create(path))
+			using (FileStream stream = File.Create(path))
 			{
 				JsonSerializer.Serialize(stream, this, ConfigContext.Default.Config);
 			}

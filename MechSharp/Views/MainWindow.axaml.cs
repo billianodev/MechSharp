@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using MechSharp.ViewModels;
 
@@ -10,7 +9,7 @@ namespace MechSharp.Views;
 
 public partial class MainWindow : Window
 {
-	private const string GitHub = "https://github.com/billiano-dev";
+	private const string GitHub = "https://github.com/billiano-dev/MechSharp";
 	private const string Kofi = "https://ko-fi.com/billiano";
 	private const string Mechvibes = "https://mechvibes.com";
 
@@ -23,7 +22,7 @@ public partial class MainWindow : Window
 
 	public MainWindow(App app) : this()
 	{
-		DataContext = ViewModel = new MainWindowViewModel(app, this);
+		DataContext = ViewModel = new(app, this);
 	}
 
 	public static void Open(string url)
@@ -62,12 +61,12 @@ public partial class MainWindow : Window
 
 	private void OpenKeypacksMenuItem_Click(object? sender, RoutedEventArgs e)
 	{
-		Open(Soundpacks.KeysCustomPath);
+		Open(Soundpacks.KeypackCustomPath);
 	}
 
 	private void OpenMousepacksMenuItem_Click(object? sender, RoutedEventArgs e)
 	{
-		Open(Soundpacks.MouseCustomPath);
+		Open(Soundpacks.MousepackCustomPath);
 	}
 
 	private void RefreshMenuItem_Click(object? sender, RoutedEventArgs e)

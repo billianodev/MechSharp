@@ -25,7 +25,7 @@ public class SoundpackInfo
 		soundpack = null;
 		try
 		{
-			var file = Path.Combine(dir, "config.json");
+			string file = Path.Combine(dir, "config.json");
 			if (File.Exists(file))
 			{
 				using (FileStream stream = File.OpenRead(file))
@@ -36,7 +36,6 @@ public class SoundpackInfo
 		}
 		catch
 		{
-
 		}
 		if (soundpack != null)
 		{
@@ -49,8 +48,9 @@ public class SoundpackInfo
 }
 
 [JsonSerializable(typeof(SoundpackInfo))]
-[JsonSerializable(typeof(Dictionary<string, string?>))]
-[JsonSerializable(typeof(Dictionary<string, (int, int)?>))]
+[JsonSerializable(typeof(Dictionary<string, string>))]
+[JsonSerializable(typeof(Dictionary<int, string>))]
+[JsonSerializable(typeof(Dictionary<int, (int, int)?>))]
 [JsonSourceGenerationOptions(
 	Converters = [typeof(TupleConverter<int, int>)],
 	PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]

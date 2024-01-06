@@ -2,13 +2,13 @@
 
   <PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFrameworks>net8.0-windows</TargetFrameworks>
 		<Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
 		<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-    <Version>0.0.1-alpha</Version>
+    <Version>0.0.2-alpha</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +25,8 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
     <PackageReference Include="Billiano.AutoLaunch" Version="0.0.1-alpha" />
-    <PackageReference Include="Billiano.NAudio" Version="1.1.0" />
+    <PackageReference Include="Billiano.NAudio" Version="2.0.1" />
+    <PackageReference Include="LibVLCSharp" Version="3.8.2" />
     <PackageReference Include="SharpHook" Version="5.2.0" />
   </ItemGroup>
 
