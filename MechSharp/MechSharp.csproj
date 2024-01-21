@@ -8,7 +8,7 @@
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
 		<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-    <Version>0.0.2-alpha</Version>
+    <Version>0.0.3-alpha</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +24,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
-    <PackageReference Include="Billiano.AutoLaunch" Version="0.0.1-alpha" />
+    <PackageReference Include="Billiano.AutoLaunch" Version="0.0.2-alpha" />
     <PackageReference Include="Billiano.NAudio" Version="2.0.1" />
     <PackageReference Include="SharpHook" Version="5.2.0" />
   </ItemGroup>
