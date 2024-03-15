@@ -38,7 +38,7 @@ public partial class MainWindow : Window
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 	}
 

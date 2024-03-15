@@ -30,7 +30,7 @@ public class Soundpacks
         {
             if (SoundpackInfo.Load(directory, out SoundpackInfo? soundpack))
             {
-                Debug.WriteLine($"Loaded soundpack {soundpack} in {soundpack.Dir}");
+                Logger.WriteLine($"Loaded soundpack {soundpack} in {soundpack.Dir}");
 
                 yield return soundpack;
             }

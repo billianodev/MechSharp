@@ -8,7 +8,6 @@ using MechSharp.Utilities;
 using MechSharp.Views;
 using SharpHook;
 using SharpHook.Native;
-using System.Diagnostics;
 
 namespace MechSharp.ViewModels;
 
@@ -102,7 +101,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 		return [];
 	}
@@ -117,7 +116,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 		return [];
 	}
@@ -139,7 +138,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine(ex);
+				Logger.WriteLine(ex);
 			}
 		});
 	}
@@ -161,7 +160,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine(ex);
+				Logger.WriteLine(ex);
 			}
 		});
 	}
@@ -237,7 +236,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 	}
 
@@ -269,7 +268,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 	}
 
@@ -289,7 +288,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 	}
 
@@ -309,7 +308,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 	}
 	#endregion

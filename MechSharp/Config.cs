@@ -36,7 +36,7 @@ public class Config
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 		return result ?? new Config();
 	}
@@ -54,7 +54,7 @@ public class Config
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine(ex);
+			Logger.WriteLine(ex);
 		}
 	}
 }
