@@ -25,10 +25,10 @@ public class SoundpackInfo
 		soundpack = null;
 		try
 		{
-			string file = Path.Combine(dir, "config.json");
+			var file = Path.Combine(dir, "config.json");
 			if (File.Exists(file))
 			{
-				using (FileStream stream = File.OpenRead(file))
+				using (var stream = File.OpenRead(file))
 				{
 					soundpack = JsonSerializer.Deserialize(stream, SoundpackInfoContext.Default.SoundpackInfo);
 				}

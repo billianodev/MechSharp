@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Billiano.NAudio;
 using Billiano.AutoLaunch;
 using MechSharp.Utilities;
 using MechSharp.Views;
+using NAudio.Wave;
 using SharpHook;
 using SharpHook.Native;
 
@@ -35,10 +35,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		this.app = app;
 		this.window = window;
 
-		startupManager = new();
-
-		audioEngine = new();
-		hook = new(true);
+		startupManager = new StartupManager();
+		
+		audioEngine = new AudioEngine(new WaveOutEvent());
+		hook = new SimpleGlobalHook(true);
 		hook.KeyPressed += Hook_KeyPressed;
 		hook.KeyReleased += Hook_KeyReleased;
 		hook.MousePressed += Hook_MousePressed;
@@ -50,8 +50,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public void Load()
 	{
-		IEnumerable<SoundpackInfo> keypacks = LoadKeypackInfos();
-		IEnumerable<SoundpackInfo> mousepacks = LoadMousepackInfos();
+		var keypacks = LoadKeypackInfos();
+		var mousepacks = LoadMousepackInfos();
 
 		window.KeypackVolumeSlider.Value = config.KeypackVolume;
 		window.MousepackVolumeSlider.Value = config.MousepackVolume;
@@ -61,7 +61,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		window.MousepackCheckBox.IsChecked = config.IsMousepackEnabled;
 		window.RandomCheckBox.IsChecked = config.IsRandomEnabled;
 
-		foreach (SoundpackInfo info in keypacks)
+		foreach (var info in keypacks)
 		{
 			if (info.Dir == config.Keypack)
 			{
@@ -70,7 +70,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			}
 		}
 		
-		foreach (SoundpackInfo info in mousepacks)
+		foreach (var info in mousepacks)
 		{
 			if (info.Dir == config.Mousepack)
 			{
@@ -95,7 +95,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		try
 		{
-			IEnumerable<SoundpackInfo> keypacks = Soundpacks.LoadKeypackInfos();
+			var keypacks = Soundpacks.LoadKeypackInfos();
 			window.KeypackSelector.ItemsSource = keypacks;
 			return keypacks;
 		}
@@ -110,7 +110,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		try
 		{
-			IEnumerable<SoundpackInfo> mousepacks = Soundpacks.LoadMousepackInfos();
+			var mousepacks = Soundpacks.LoadMousepackInfos();
 			window.MousepackSelector.ItemsSource = mousepacks;
 			return mousepacks;
 		}
@@ -129,18 +129,15 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			window.KeypackSelector.SelectedItem = null;
 			return;
 		}
-
-		Task.Run(() =>
+		
+		try
 		{
-			try
-			{
-				keypack = Soundpack.LoadKeypack(info, audioEngine.WaveFormat, config.IsKeyUpEnabled);
-			}
-			catch (Exception ex)
-			{
-				Logger.WriteLine(ex);
-			}
-		});
+			keypack = Soundpack.LoadKeypack(info, audioEngine.WaveFormat, config.IsKeyUpEnabled);
+		}
+		catch (Exception ex)
+		{
+			Logger.WriteLine(ex);
+		}
 	}
 
 	public void LoadMousepack(SoundpackInfo? info)
@@ -152,17 +149,14 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			return;
 		}
 
-		Task.Run(() =>
+		try
 		{
-			try
-			{
-				mousepack = Soundpack.LoadMousepack(info, audioEngine.WaveFormat);
-			}
-			catch (Exception ex)
-			{
-				Logger.WriteLine(ex);
-			}
-		});
+			mousepack = Soundpack.LoadMousepack(info, audioEngine.WaveFormat);
+		}
+		catch (Exception ex)
+		{
+			Logger.WriteLine(ex);
+		}
 	}
 
 	public void SetKeypackVolume(double value)

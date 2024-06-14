@@ -13,14 +13,14 @@ public static class Logger
 	static Logger()
 	{
 #if DEBUG
-		string path = Path.Combine(AppContext.BaseDirectory, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.log");
+		var path = Path.Combine(AppContext.BaseDirectory, $"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.log");
 		stream = new StreamWriter(File.Create(path));
 #endif
 	}
 
 	public static void WriteLine(object obj)
 	{
-		string? s = obj.ToString();
+		var s = obj.ToString();
 #if DEBUG
 		stream.WriteLine(s);
 		stream.Flush();

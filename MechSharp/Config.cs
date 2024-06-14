@@ -28,7 +28,7 @@ public class Config
 		{
 			if (File.Exists(path))
 			{
-				using (FileStream stream = File.OpenRead(path))
+				using (var stream = File.OpenRead(path))
 				{
 					result = JsonSerializer.Deserialize(stream, ConfigContext.Default.Config);
 				}

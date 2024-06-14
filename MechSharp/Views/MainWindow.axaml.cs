@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using MechSharp.ViewModels;
 
@@ -18,6 +19,7 @@ public partial class MainWindow : Window
 	public MainWindow()
 	{
 		InitializeComponent();
+		InitializeHook();
 	}
 
 	public MainWindow(App app) : this()
@@ -41,6 +43,12 @@ public partial class MainWindow : Window
 			Logger.WriteLine(ex);
 		}
 	}
+	
+	private void InitializeHook()
+	{
+		KeyDownEvent.AddClassHandler<Window>(OnKeyDown, RoutingStrategies.Direct | RoutingStrategies.Tunnel);
+		KeyUpEvent.AddClassHandler<Window>(OnKeyUp, RoutingStrategies.Direct | RoutingStrategies.Tunnel);
+	}
 
 	protected override void OnLoaded(RoutedEventArgs e)
 	{
@@ -55,6 +63,16 @@ public partial class MainWindow : Window
 			e.Cancel = true;
 		}
 		ViewModel?.Save();
+	}
+	
+	private void OnKeyDown(Window sender, KeyEventArgs e)
+	{
+		e.Handled = true;
+	}
+	
+	private void OnKeyUp(Window sender, KeyEventArgs e)
+	{
+		e.Handled = true;
 	}
 
 	#region Menu

@@ -57,7 +57,7 @@ _RAM: 16 GB_
 
 👑 __Overall about the same__
 
-_*Linux and MacOS is technically supported but have many issue, so compile it yourself and modify as nessesary_
+_*Linux and MacOS are not supported, but few adjustment in audio decoder and playback might_
 
 ### Backend
 
@@ -69,4 +69,4 @@ _*Linux and MacOS is technically supported but have many issue, so compile it yo
 |GUI backend|Avalonia|Electron|Electron|
 |Key hook|libuiohook|iohook|iohook|
 
-_*Since MechSharp use Media Foundation as codecs it mean that if you target platform other than Windows most audio format will not be compatible and will only support wav, mp3 and ogg_
+-*Media Foundation is windows only codecs*

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -26,9 +25,9 @@ public class Soundpacks
 
     private static IEnumerable<SoundpackInfo> LoadAll(params string[] directories)
     {
-        foreach (string directory in EnumerateDirectories(directories))
+        foreach (var directory in EnumerateDirectories(directories))
         {
-            if (SoundpackInfo.Load(directory, out SoundpackInfo? soundpack))
+            if (SoundpackInfo.Load(directory, out var soundpack))
             {
                 Logger.WriteLine($"Loaded soundpack {soundpack} in {soundpack.Dir}");
 
@@ -39,15 +38,14 @@ public class Soundpacks
 
     private static IEnumerable<string> EnumerateDirectories(params string[] directories)
     {
-        IEnumerable<string> enumerable = [];
-        
-        foreach (string directory in directories)
+        var list = new List<IEnumerable<string>>();
+        foreach (var directory in directories)
         {
             if (Directory.Exists(directory))
             {
-                enumerable = enumerable.Concat(Directory.EnumerateDirectories(directory));
+                list.Add(Directory.EnumerateDirectories(directory));
             }
         }
-        return enumerable;
+        return list.SelectMany(x =>x);
     }
 }
