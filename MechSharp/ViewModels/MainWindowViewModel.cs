@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Billiano.NAudio;
+using Billiano.Audio.FireForget;
 using Billiano.AutoLaunch;
 using MechSharp.Utilities;
 using MechSharp.Views;
@@ -22,7 +22,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	private readonly StartupManager startupManager;
 	
-	private readonly AudioEngine audioEngine;
+	private readonly FireForgetPlayer audioPlayer;
 	private readonly SimpleGlobalHook hook;
 	private readonly HashSet<KeyCode> pressedKeys;
 
@@ -37,7 +37,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 		startupManager = new StartupManager();
 		
-		audioEngine = new AudioEngine(new WaveOutEvent());
+		audioPlayer = new FireForgetPlayer(new WasapiOut(), new WaveFormat(44100, 1));
 		hook = new SimpleGlobalHook(true);
 		hook.KeyPressed += Hook_KeyPressed;
 		hook.KeyReleased += Hook_KeyReleased;
@@ -132,7 +132,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		
 		try
 		{
-			keypack = Soundpack.LoadKeypack(info, audioEngine.WaveFormat, config.IsKeyUpEnabled);
+			keypack = Soundpack.LoadKeypack(info, config.IsKeyUpEnabled);
 		}
 		catch (Exception ex)
 		{
@@ -151,7 +151,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 		try
 		{
-			mousepack = Soundpack.LoadMousepack(info, audioEngine.WaveFormat);
+			mousepack = Soundpack.LoadMousepack(info);
 		}
 		catch (Exception ex)
 		{
@@ -218,14 +218,14 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		if (!IsKeyDown)
 		{
 			IsKeyDown = true;
-			PropertyChanged?.Invoke(this, new(nameof(IsKeyDown)));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsKeyDown)));
 		}
 		try
 		{
-			int key = MechvibesKey.Map(e.Data.KeyCode, config.IsRandomEnabled);
-			if (key != MechvibesKey.MkNone && keypack?.TryGetValue(key, out SampleCache? sample) == true)
+			var key = MechvibesKey.Map(e.Data.KeyCode, config.IsRandomEnabled);
+			if (key != MechvibesKey.MkNone && keypack?.TryGetValue(key, out var source) == true)
 			{
-				audioEngine.Play(sample, config.KeypackVolume);
+				audioPlayer.Play(source, config.KeypackVolume);
 			}
 		}
 		catch (Exception ex)
@@ -246,7 +246,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		if (pressedKeys.Count == 0 && IsKeyDown)
 		{
 			IsKeyDown = false;
-			PropertyChanged?.Invoke(this, new(nameof(IsKeyDown)));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsKeyDown)));
 		}
 		if (!config.IsKeyUpEnabled)
 		{
@@ -254,10 +254,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		try
 		{
-			int key = -MechvibesKey.Map(e.Data.KeyCode, config.IsRandomEnabled);
-			if (key != MechvibesKey.MkNone && keypack?.TryGetValue(key, out SampleCache? sample) == true)
+			var key = -MechvibesKey.Map(e.Data.KeyCode, config.IsRandomEnabled);
+			if (key != MechvibesKey.MkNone && keypack?.TryGetValue(key, out var source) == true)
 			{
-				audioEngine.Play(sample, config.KeypackVolume);
+				audioPlayer.Play(source, config.KeypackVolume);
 			}
 		}
 		catch (Exception ex)
@@ -274,10 +274,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		try
 		{
-			int key = MousevibesButton.Map(e.Data.Button);
-			if (key != MousevibesButton.MbNone && mousepack?.TryGetValue(key, out SampleCache? sample) == true)
+			var key = MousevibesButton.Map(e.Data.Button);
+			if (key != MousevibesButton.MbNone && mousepack?.TryGetValue(key, out var source) == true)
 			{
-				audioEngine.Play(sample, config.MousepackVolume);
+				audioPlayer.Play(source, config.MousepackVolume);
 			}
 		}
 		catch (Exception ex)
@@ -294,10 +294,10 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		}
 		try
 		{
-			int key = MousevibesButton.Map(e.Data.Button);
-			if (key != MousevibesButton.MbNone && mousepack?.TryGetValue(key, out SampleCache? sample) == true)
+			var key = MousevibesButton.Map(e.Data.Button);
+			if (key != MousevibesButton.MbNone && mousepack?.TryGetValue(key, out var source) == true)
 			{
-				audioEngine.Play(sample, config.MousepackVolume);
+				audioPlayer.Play(source, config.MousepackVolume);
 			}
 		}
 		catch (Exception ex)

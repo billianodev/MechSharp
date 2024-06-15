@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Avalonia.Media;
-using Billiano.NAudio;
+using Billiano.Audio;
+using Billiano.Audio.FireForget;
+using CSCore.Codecs;
 using MechSharp.Utilities;
 using NAudio.Wave;
-using PortAudioSharp;
-using SkiaSharp;
 
 namespace MechSharp;
 
-public class Soundpack : Dictionary<int, SampleCache>
+public class Soundpack : Dictionary<int, IFireForgetSource>
 {
 	public SoundpackInfo Info { get; }
 
@@ -21,9 +20,9 @@ public class Soundpack : Dictionary<int, SampleCache>
 		Info = info;
 	}
 
-	public static Soundpack LoadKeypack(SoundpackInfo info, WaveFormat waveFormat, bool isKeyUp)
+	public static Soundpack LoadKeypack(SoundpackInfo info, bool isKeyUp)
 	{
-		Soundpack soundpack = new(info);
+		var soundpack = new Soundpack(info);
 		if (info.KeyDefineType == "multi")
 		{
 			var defines = info.Defines.Deserialize(SoundpackInfoContext.Default.DictionaryInt32String);
@@ -32,7 +31,7 @@ public class Soundpack : Dictionary<int, SampleCache>
 				return soundpack;
 			}
 
-			var caches = new Dictionary<string, (SampleCache, SampleCache?)>();
+			var caches = new Dictionary<string, (IFireForgetSource, IFireForgetSource?)>();
 			foreach (var file in defines.Values.Distinct())
 			{
 				if (file == null)
@@ -44,12 +43,12 @@ public class Soundpack : Dictionary<int, SampleCache>
 				{
 					continue;
 				}
-				using (var reader = new AudioReader(path))
+				using (var reader = CodecFactory.Instance.GetCodec(path).ToWaveProvider())
 				{
-					caches.Add(file, Split(reader, waveFormat, isKeyUp));
+					caches.Add(file, Split(reader, isKeyUp));
 				}
 			}
-			foreach ((int id, string file) in defines)
+			foreach (var (id, file) in defines)
 			{
 				if (file == null)
 				{
@@ -78,8 +77,8 @@ public class Soundpack : Dictionary<int, SampleCache>
 			{
 				return soundpack;
 			}
-			var caches = new Dictionary<(int, int), (SampleCache, SampleCache?)>();
-			using (var reader = new AudioReader(path))
+			var caches = new Dictionary<(int, int), (IFireForgetSource, IFireForgetSource?)>();
+			using (var reader = CodecFactory.Instance.GetCodec(path).ToWaveProvider())
 			{
 				var buffer = new byte[reader.Length];
 				reader.Read(buffer, 0, buffer.Length);
@@ -98,15 +97,15 @@ public class Soundpack : Dictionary<int, SampleCache>
 					}
 					using (RawSourceWaveStream sStream = new(buffer, start, length, reader.WaveFormat))
 					{
-						caches.Add(range.Value, Split(sStream, waveFormat, isKeyUp));
+						caches.Add(range.Value, Split(sStream, isKeyUp));
 					}
 				}
 			}
-			foreach ((var id, var range) in defines)
+			foreach (var (id, range) in defines)
 			{
 				if (range.HasValue)
 				{
-					if (caches.TryGetValue(range.Value, out (SampleCache, SampleCache?) cache))
+					if (caches.TryGetValue(range.Value, out var cache))
 					{
 						soundpack[id] = cache.Item1;
 						if (isKeyUp)
@@ -121,7 +120,7 @@ public class Soundpack : Dictionary<int, SampleCache>
 		throw new NotSupportedException();
 	}
 
-	public static Soundpack LoadMousepack(SoundpackInfo info, WaveFormat waveFormat)
+	public static Soundpack LoadMousepack(SoundpackInfo info)
 	{
 		var soundpack = new Soundpack(info);
 		var defines = info.Defines.Deserialize(SoundpackInfoContext.Default.DictionaryStringString);
@@ -129,26 +128,26 @@ public class Soundpack : Dictionary<int, SampleCache>
 		{
 			return soundpack;
 		}
-		foreach ((var id, string file) in defines)
+		foreach (var (id, file) in defines)
 		{
 			var path = Path.Combine(info.Dir!, file);
 			if (!File.Exists(path))
 			{
 				continue;
 			}
-			using (var reader = new AudioReader(path))
+			using (var reader = CodecFactory.Instance.GetCodec(path).ToWaveProvider())
 			{
-				soundpack[MousevibesButton.Parse(id)] = SampleCacheFactory.CreateFromWaveWithResampler(reader, waveFormat);
+				soundpack[MousevibesButton.Parse(id)] = reader.ToFireForgetSource();
 			}
 		}
 		return soundpack;
 	}
 
-	private static (SampleCache, SampleCache?) Split(WaveStream stream, WaveFormat waveFormat, bool keyUp)
+	private static (IFireForgetSource, IFireForgetSource?) Split(WaveStream stream, bool keyUp)
 	{
 		if (!keyUp)
 		{
-			return (SampleCacheFactory.CreateFromWaveWithResampler(stream, waveFormat), null);
+			return (stream.ToFireForgetSource(), null);
 		}
 
 		var buffer = new byte[stream.Length];
@@ -161,8 +160,8 @@ public class Soundpack : Dictionary<int, SampleCache>
 		using (var fStream = new RawSourceWaveStream(buffer, 0, mid, stream.WaveFormat))
 		using (var sStream = new RawSourceWaveStream(buffer, mid, length - mid, stream.WaveFormat))
 		{
-			return (SampleCacheFactory.CreateFromWaveWithResampler(fStream, waveFormat),
-				SampleCacheFactory.CreateFromWaveWithResampler(sStream, waveFormat));
+			return (fStream.ToFireForgetSource(),
+				sStream.ToFireForgetSource());
 		}
 	}
 }

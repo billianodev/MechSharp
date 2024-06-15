@@ -169,7 +169,7 @@ public static class MechvibesKey
 
 	public static int Map(KeyCode keyCode, bool random)
 	{
-		int code = keyCode switch
+		var code = keyCode switch
 		{
 			KeyCode.VcEscape => MkEscape,
 			KeyCode.Vc1 => Mk1,

@@ -22,7 +22,7 @@ public static class MousevibesButton
 
 	public static int Parse(string str)
 	{
-		if (int.TryParse(str, out int r))
+		if (int.TryParse(str, out var r))
 		{
 			return str.StartsWith('0') ? -r : r;
 		}
