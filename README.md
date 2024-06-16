@@ -57,7 +57,7 @@ _CPU: Intel i7-8750H @ 2.2GHz 6 core_
 
 👑 __Each have different sets of features depending on your needs, but I might say MechSharp__
 
-_*Linux and MacOS coming soon!_
+_*Linux and MacOS is now in experimental! For now you can compile it yourself_
 
 ### Backend
 

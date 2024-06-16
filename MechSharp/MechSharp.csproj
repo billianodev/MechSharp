@@ -13,10 +13,6 @@
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-        <OutputType>Exe</OutputType>
-    </PropertyGroup>
-
     <ItemGroup>
         <Compile Update="Views\MainWindow.axaml.cs">
             <DependentUpon>MainWindow.axaml</DependentUpon>
@@ -24,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <TrimmerRootDescriptor Include="Root.xml"/>
+        <TrimmerRootDescriptor Include="Trim.xml"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -32,21 +28,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Assets\icon.ico"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <None Update="sounds\**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 
     <ItemGroup>
         <None Include="..\LICENSE.txt">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Include="..\README.md">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 
