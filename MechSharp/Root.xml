@@ -1,8 +1,4 @@
 ﻿<linker>
-	<assembly fullname="NAudio.Wasapi"/>
-	<assembly fullname="MechSharp">
-		<type fullname="MechSharp.ViewModels.ApplicationViewModel"/>
-		<type fullname="MechSharp.ViewModels.MainWindowViewModel"/>
-		<type fullname="MechSharp.Views.MainWindow"/>
-	</assembly>
+	<assembly fullname="CSCore"/>
+	<assembly fullname="MechSharp"/>
 </linker>

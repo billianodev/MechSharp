@@ -34,7 +34,7 @@ public class SoundpackInfo
 				}
 			}
 		}
-		catch
+		catch (Exception)
 		{
 		}
 		if (soundpack != null)

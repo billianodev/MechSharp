@@ -7,7 +7,7 @@ using MechSharp.Views;
 
 namespace MechSharp;
 
-public partial class App : Application
+public class App : Application
 {
 	public MainWindow? MainWindow { get; private set; }
 

@@ -54,8 +54,8 @@
         <PackageReference Include="Avalonia.Desktop" Version="11.0.6"/>
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6"/>
         <PackageReference Include="Billiano.Audio.FireForget" Version="0.0.2-alpha" />
+        <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.0-beta" />
         <PackageReference Include="Billiano.AutoLaunch" Version="0.0.2-alpha"/>
-        <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
         <PackageReference Include="SharpHook" Version="5.2.0"/>
     </ItemGroup>
 

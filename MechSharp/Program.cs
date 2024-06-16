@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Billiano.Audio;
 
 namespace MechSharp;
 
@@ -10,6 +11,7 @@ public static class Program
 	{
 		try
 		{
+			CodecFactoryUtility.UseOgg();
 			return BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 		}
 		catch (Exception ex)

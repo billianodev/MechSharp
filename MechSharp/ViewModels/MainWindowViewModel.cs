@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Billiano.Audio.FireForget;
+using Billiano.Audio.PortAudio;
 using Billiano.AutoLaunch;
 using MechSharp.Utilities;
 using MechSharp.Views;
@@ -37,7 +38,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 		startupManager = new StartupManager();
 		
-		audioPlayer = new FireForgetPlayer(new WasapiOut(), new WaveFormat(44100, 1));
+		audioPlayer = new FireForgetPlayer(new PortAudioOut(), new WaveFormat(44100, 1));
 		hook = new SimpleGlobalHook(true);
 		hook.KeyPressed += Hook_KeyPressed;
 		hook.KeyReleased += Hook_KeyReleased;
