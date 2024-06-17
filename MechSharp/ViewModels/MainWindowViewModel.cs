@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Billiano.Audio.FireForget;
 using Billiano.Audio.PortAudio;
 using Billiano.AutoLaunch;
@@ -20,8 +21,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	private readonly App app;
 	private readonly MainWindow window;
-
-	private readonly StartupManager startupManager;
+	
+	private readonly AutoLaunchManager autoLaunchManager;
 	
 	private readonly FireForgetPlayer audioPlayer;
 	private readonly SimpleGlobalHook hook;
@@ -36,7 +37,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 		this.app = app;
 		this.window = window;
 
-		startupManager = new StartupManager();
+		autoLaunchManager = new AutoLaunchManager();
 		
 		audioPlayer = new FireForgetPlayer(new PortAudioOut(), new WaveFormat(44100, 1));
 		hook = new SimpleGlobalHook(true);
@@ -80,8 +81,8 @@ public class MainWindowViewModel : INotifyPropertyChanged
 			}
 		}
 
-		window.StartupCheckBox.IsEnabled = startupManager != null;
-		window.StartupCheckBox.IsChecked = startupManager?.Get();
+		window.StartupCheckBox.IsEnabled = autoLaunchManager != null;
+		window.StartupCheckBox.IsChecked = autoLaunchManager?.Get();
 		hook.RunAsync();
 	}
 
@@ -96,7 +97,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		try
 		{
-			var keypacks = Soundpacks.LoadKeypackInfos();
+			var keypacks = Soundpacks.LoadKeypackInfos().ToArray();
 			window.KeypackSelector.ItemsSource = keypacks;
 			return keypacks;
 		}
@@ -111,7 +112,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		try
 		{
-			var mousepacks = Soundpacks.LoadMousepackInfos();
+			var mousepacks = Soundpacks.LoadMousepackInfos().ToArray();
 			window.MousepackSelector.ItemsSource = mousepacks;
 			return mousepacks;
 		}
@@ -202,7 +203,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
 
 	public void ToggleStartup(bool value)
 	{
-		startupManager.Set(value);
+		autoLaunchManager.Set(value);
 	}
 
 	#region Hook Callback

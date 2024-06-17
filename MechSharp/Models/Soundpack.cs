@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Billiano.Audio;
+using Billiano.Audio.CSCoreSupport;
 using Billiano.Audio.FireForget;
 using CSCore.Codecs;
 using MechSharp.Utilities;
@@ -45,7 +46,7 @@ public class Soundpack : Dictionary<int, IFireForgetSource>
 					{
 						continue;
 					}
-					using (var reader = CodecFactory.Instance.GetCodec(path).ToWaveProvider())
+					using (var reader = Program.CodecFactory.GetCodec(path).ToWaveProvider())
 					{
 						caches.Add(file, Split(reader, isKeyUp));
 					}
@@ -80,7 +81,7 @@ public class Soundpack : Dictionary<int, IFireForgetSource>
 					return soundpack;
 				}
 				var caches = new Dictionary<(int, int), (IFireForgetSource, IFireForgetSource?)>();
-				using (var reader = CodecFactory.Instance.GetCodec(path).ToWaveProvider())
+				using (var reader = Program.CodecFactory.GetCodec(path).ToWaveProvider())
 				{
 					var buffer = new byte[reader.Length];
 					reader.Read(buffer, 0, buffer.Length);
@@ -139,7 +140,7 @@ public class Soundpack : Dictionary<int, IFireForgetSource>
 			{
 				continue;
 			}
-			using (var reader = CodecFactory.Instance.GetCodec(path).ToWaveProvider())
+			using (var reader = Program.CodecFactory.GetCodec(path).ToWaveProvider())
 			{
 				soundpack[MousevibesButton.Parse(id)] = reader.ToFireForgetSource();
 			}

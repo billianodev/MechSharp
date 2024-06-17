@@ -6,12 +6,18 @@ namespace MechSharp;
 
 public static class Program
 {
+	public static CodecFactory CodecFactory { get; }
+
+	static Program()
+	{
+		CodecFactory = CodecFactory.CreateDefault();
+	}
+	
 	[STAThread]
 	private static int Main(string[] args)
 	{
 		try
 		{
-			CodecFactoryUtility.UseOgg();
 			return BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 		}
 		catch (Exception ex)

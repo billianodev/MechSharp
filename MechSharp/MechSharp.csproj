@@ -43,12 +43,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.6"/>
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6"/>
-        <PackageReference Include="Billiano.Audio.FireForget" Version="0.0.2-alpha" />
-        <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.0-beta" />
-        <PackageReference Include="Billiano.AutoLaunch" Version="0.0.2-alpha"/>
-        <PackageReference Include="SharpHook" Version="5.2.0"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+        <PackageReference Include="Billiano.Audio.FireForget" Version="0.1.1-beta" />
+        <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.1-beta" />
+        <PackageReference Include="Billiano.AutoLaunch" Version="0.0.2-beta" />
+        <PackageReference Include="SharpHook" Version="5.3.6" />
     </ItemGroup>
 
 </Project>

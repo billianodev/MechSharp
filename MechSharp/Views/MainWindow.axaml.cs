@@ -10,8 +10,8 @@ namespace MechSharp.Views;
 
 public partial class MainWindow : Window
 {
-	private const string GitHub = "https://github.com/billiano-dev/MechSharp";
-	private const string Kofi = "https://ko-fi.com/billiano";
+	private const string GitHub = "https://github.com/billianodev/MechSharp";
+	private const string Kofi = "https://ko-fi.com/G2G1SRUJG";
 	private const string Mechvibes = "https://mechvibes.com";
 
 	public MainWindowViewModel? ViewModel { get; }
