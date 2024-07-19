@@ -2,9 +2,9 @@
 
 namespace MechSharp.Core.Soundpacks;
 
-public record SoundpackUpDownSource(IFireForgetSource? Down, IFireForgetSource? Up)
+public record SoundpackUpDownSource(WaveCache? Down, WaveCache? Up)
 {
-    public SoundpackUpDownSource(IFireForgetSource? down) : this(down, null)
+    public SoundpackUpDownSource(WaveCache? down) : this(down, null)
     {
     }
 }

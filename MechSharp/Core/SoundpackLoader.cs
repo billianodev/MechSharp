@@ -1,4 +1,5 @@
 ﻿using Billiano.Audio;
+using Billiano.Audio.Codecs.CSCore.MediaFoundation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using MechSharp.Core.Soundpacks;
 using MechSharp.Utilities;
@@ -24,6 +25,8 @@ public sealed partial class SoundpacksLoader : ObservableObject
     static SoundpacksLoader()
     {
         Codecs = CodecFactory.CreateDefault();
+        Codecs.TryRegisterAAC();
+        Codecs.UseMediaFoundationFallback();
 
         KeypackDirectories = PathHelper.AppDir.CombineThenCreateDirectory("sounds", "keys");
         KeypackCustomDirectory = PathHelper.UserDir.CombineThenCreateDirectory("mechvibes_custom");

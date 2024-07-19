@@ -2,12 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Billiano.Audio.CSCoreSupport;
 using Billiano.Audio.FireForget;
 using MechSharp.Json;
 using MechSharp.Models;
 using MechSharp.Utilities;
-using NAudio.Wave;
 
 namespace MechSharp.Core.Soundpacks.Defines;
 
@@ -38,17 +36,17 @@ public sealed class KeypackDefinesMulti(SoundpackData data, bool keyUp) : Soundp
                 continue;
             }
 
-            using (var reader = SoundpacksLoader.Codecs.GetCodec(path).ToWaveProvider())
+            using (var reader = SoundpacksLoader.Codecs.GetCodec(path))
             {
                 SoundpackUpDownSource sound;
                 if (keyUp)
                 {
                     WaveHelper.Split(reader, out var down, out var up);
-                    sound = new SoundpackUpDownSource(down.ToFireForgetSource(), up.ToFireForgetSource());
+                    sound = new SoundpackUpDownSource(down.ToWaveCache(), up.ToWaveCache());
                 }
                 else
                 {
-                    var source = reader.ToFireForgetSource();
+                    var source = reader.ToWaveCache();
                     sound = new SoundpackUpDownSource(source);
                 }
 

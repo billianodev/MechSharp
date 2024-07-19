@@ -14,13 +14,13 @@ public abstract class SoundpackDefines
         dict = Enumerate().ToDictionary(x => x.Id, x => x.Source);
     }
 
-    public bool TryGetDownSound(int id, [NotNullWhen(true)] out IFireForgetSource? result)
+    public bool TryGetDownSound(int id, [NotNullWhen(true)] out WaveCache? result)
     {
         dict.TryGetValue(id, out var source);
         return (result = source?.Down) is not null;
     }
 
-    public bool TryGetUpSound(int id, [NotNullWhen(true)] out IFireForgetSource? result)
+    public bool TryGetUpSound(int id, [NotNullWhen(true)] out WaveCache? result)
     {
         dict.TryGetValue(id, out var source);
         return (result = source?.Up) is not null;

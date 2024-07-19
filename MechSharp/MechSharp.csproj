@@ -9,7 +9,7 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
         <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-        <Version>0.3.0-beta</Version>
+        <Version>0.3.1-beta</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     </PropertyGroup>
@@ -40,12 +40,13 @@
     <ItemGroup>
         <PackageReference Include="Avalonia.Desktop" Version="11.1.0-rc2" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-rc2" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
-        <PackageReference Include="Billiano.Audio.FireForget" Version="0.1.1-beta" />
-        <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.1-beta" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-rc2" />
+        <PackageReference Include="Billiano.Audio" Version="0.3.1-beta" />
+        <PackageReference Include="Billiano.Audio.Codecs.CSCore" Version="0.1.0-beta" />
+        <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.2-beta" />
         <PackageReference Include="Billiano.AutoLaunch" Version="0.0.2-beta" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-        <PackageReference Include="SharpHook" Version="5.3.6" />
+        <PackageReference Include="SharpHook" Version="5.3.7" />
     </ItemGroup>
 
     <ItemGroup Condition=" '$(Configuration)' == 'DEBUG' ">
