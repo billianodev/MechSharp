@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -20,7 +21,10 @@ public partial class MainWindow : Window
 
     protected override void OnClosing(WindowClosingEventArgs e)
     {
-        base.OnClosing(e);
+        if (Application.Current is App app)
+        {
+            app.ViewModel.Save();
+        }
 
         if (!System.OperatingSystem.IsWindows() || e.CloseReason != WindowCloseReason.WindowClosing)
         {

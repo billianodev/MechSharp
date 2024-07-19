@@ -28,13 +28,6 @@ public class App : Application
             {
                 DataContext = DataContext
             };
-
-            desktop.Exit += OnExit;
         }
-    }
-
-    private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
-    {
-        ViewModel.Save();
     }
 }

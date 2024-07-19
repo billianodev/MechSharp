@@ -35,7 +35,11 @@ public partial class MenuViewModel : ViewModelBase
     [RelayCommand]
     private static void Refresh()
     {
-        App?.ViewModel.Load();
+        if (App?.ViewModel is not null)
+        {
+            App.ViewModel.Save();
+            App.ViewModel.Load();
+        }
     }
 
     [RelayCommand]
