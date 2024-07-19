@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="using:MechSharp.Views"
+             xmlns:vm="using:MechSharp.ViewModels"
+             x:Class="MechSharp.Views.MainView"
+             x:DataType="vm:AppViewModel">
+
+    <StackPanel Margin="50">
+        <views:LogoView Padding="0,0,0,30"/>
+        <views:SelectorView Padding="0,0,0,20"/>
+        <views:OptionsView/>
+    </StackPanel>
+    
+</UserControl>

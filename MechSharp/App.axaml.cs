@@ -1,35 +1,40 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using MechSharp.ViewModels;
-using MechSharp.Views;
 
 namespace MechSharp;
 
 public class App : Application
 {
-	public MainWindow? MainWindow { get; private set; }
+    public AppViewModel ViewModel { get; }
+    public MainWindow? MainWindow { get; private set; }
 
-	public App()
-	{
-		DataContext = new ApplicationViewModel(this);
-	}
+    public App()
+    {
+        DataContext = ViewModel = new AppViewModel();
+    }
 
-	public override void Initialize()
-	{
-		AvaloniaXamlLoader.Load(this);
-	}
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 
-	public override void OnFrameworkInitializationCompleted()
-	{
-		BindingPlugins.DataValidators.RemoveAt(0);
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = MainWindow = new MainWindow()
+            {
+                DataContext = DataContext
+            };
 
-		if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-		{
-			desktop.MainWindow = MainWindow = new(this);
-		}
+            desktop.Exit += OnExit;
+        }
+    }
 
-		base.OnFrameworkInitializationCompleted();
-	}
+    private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        ViewModel.Save();
+    }
 }

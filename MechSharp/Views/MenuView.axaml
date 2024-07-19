@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MechSharp.ViewModels"
+             x:Class="MechSharp.Views.MenuView"
+             x:DataType="vm:MenuViewModel">
+
+    <Menu>
+        <MenuItem Header="File">
+            <MenuItem Header="Refresh Soundpacks" Command="{Binding RefreshCommand}"/>
+            <MenuItem Header="Open Keypacks Folder" Command="{Binding OpenKeypacksCommand}"/>
+            <MenuItem Header="Open Mousepacks Folder" Command="{Binding OpenMousepacksCommand}"/>
+            <Separator/>
+            <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+        </MenuItem>
+        <MenuItem Header="Help">
+            <MenuItem Header="GitHub" Command="{Binding OpenGitHubCommand}"/>
+            <MenuItem Header="Buy me a coffee" Command="{Binding OpenKofiCommand}"/>
+            <MenuItem Header="Mechvibes" Command="{Binding OpenMechvibesCommand}"/>
+        </MenuItem>
+    </Menu>
+
+    <UserControl.Styles>
+        <Style Selector="Menu">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+        </Style>
+    </UserControl.Styles>
+
+</UserControl>

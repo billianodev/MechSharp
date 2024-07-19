@@ -1,32 +1,35 @@
 using System;
 using Avalonia;
-using Billiano.Audio;
+using MechSharp.Core;
 
 namespace MechSharp;
 
 public static class Program
 {
-	public static CodecFactory CodecFactory { get; }
+    [STAThread]
+    private static int Main(string[] args)
+    {
+        try
+        {
+            var app = BuildAvaloniaApp();
+            return app.StartWithClassicDesktopLifetime(args);
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteLine(ex);
+#if DEBUG
+            throw;
+#else
+            return ex.GetHashCode();
+#endif
+        }
+    }
 
-	static Program()
-	{
-		CodecFactory = CodecFactory.CreateDefault();
-	}
-	
-	[STAThread]
-	private static int Main(string[] args)
-	{
-		try
-		{
-			return BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-		}
-		catch (Exception ex)
-		{
-			Logger.WriteLine(ex);
-			return ex.GetHashCode();
-		}
-	}
-
-	public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>()
-			.UsePlatformDetect();
+    public static AppBuilder BuildAvaloniaApp()
+    {
+        var builder = AppBuilder.Configure<App>();
+        builder.UsePlatformDetect();
+        builder.WithInterFont();
+        return builder;
+    }
 }

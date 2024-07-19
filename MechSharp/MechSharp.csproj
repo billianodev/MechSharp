@@ -5,34 +5,29 @@
         <TargetFrameworks>net8.0</TargetFrameworks>
         <Nullable>enable</Nullable>
         <PublishTrimmed>true</PublishTrimmed>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
         <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-        <Version>0.2.0-beta</Version>
+        <Version>0.3.0-beta</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Update="Views\MainWindow.axaml.cs">
-            <DependentUpon>MainWindow.axaml</DependentUpon>
-        </Compile>
+        <TrimmerRootDescriptor Include="Trim.xml" />
     </ItemGroup>
 
     <ItemGroup>
-        <TrimmerRootDescriptor Include="Trim.xml"/>
+        <AvaloniaResource Include="Assets\icon.ico" />
     </ItemGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\icon.ico"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="sounds\**">
+        <None Include="sounds\**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-
+    
     <ItemGroup>
         <None Include="..\LICENSE.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -43,12 +38,18 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.1.0-rc2" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-rc2" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
         <PackageReference Include="Billiano.Audio.FireForget" Version="0.1.1-beta" />
         <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.1-beta" />
         <PackageReference Include="Billiano.AutoLaunch" Version="0.0.2-beta" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="SharpHook" Version="5.3.6" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(Configuration)' == 'DEBUG' ">
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.1.0-rc2" />
     </ItemGroup>
 
 </Project>

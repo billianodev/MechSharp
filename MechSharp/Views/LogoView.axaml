@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MechSharp.ViewModels"
+             x:Class="MechSharp.Views.LogoView"
+             x:DataType="vm:LogoViewModel">
+    
+    <Border Name="Outer" Classes.down="{Binding IsKeyPressed}">
+        <Border Name="Inner">
+            <Viewbox>
+                <TextBlock Text="MechSharp"/>
+            </Viewbox>
+        </Border>
+    </Border>
+
+    <UserControl.Styles>
+        <Style Selector="Border#Outer">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,3"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Width" Value="230"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Padding" Value="0,1,0,-1"/>
+        </Style>
+        <Style Selector="Border#Outer.down">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0,3,0,0"/>
+        </Style>
+        <Style Selector="Border#Inner">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemBaseHighColor}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="15"/>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+    </UserControl.Styles>
+
+</UserControl>

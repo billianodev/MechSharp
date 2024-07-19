@@ -1,22 +1,21 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:MechSharp.ViewModels"
-             xmlns:local="using:MechSharp"
              x:Class="MechSharp.App"
-             x:DataType="vm:ApplicationViewModel">
+             x:DataType="vm:AppViewModel">
 
  <Application.Styles>
     <FluentTheme>
       <FluentTheme.Palettes>
         <ColorPaletteResources x:Key="Light" Accent="Red"/>
-        <ColorPaletteResources x:Key="Dark" Accent="DarkRed" RegionColor="#050505"/>
+        <ColorPaletteResources x:Key="Dark" Accent="DarkRed"/>
       </FluentTheme.Palettes>
     </FluentTheme>
   </Application.Styles>
 
   <TrayIcon.Icons>
     <TrayIcons>
-      <TrayIcon Icon="/Assets/icon.ico" Command="{Binding ShowTrayIcon_Command}"/>
+      <TrayIcon Icon="/Assets/icon.ico" Command="{Binding FocusCommand}"/>
     </TrayIcons>
   </TrayIcon.Icons>
   

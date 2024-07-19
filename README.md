@@ -5,8 +5,6 @@
 [![](https://img.shields.io/badge/Built_with-.NET-blue)](https://dot.net/)
 [![](https://img.shields.io/badge/Check-Mechvibes-white)](https://mechvibes.com)
 
----
-
 MechSharp is an app that simulate mechanical keyboard and is a rewrite of Mechvibes that brings key up, random sounds and aim to provides better performance
 
 ---
@@ -29,18 +27,33 @@ If you had use Mechvibes or Mechvibes++ before, MechSharp is designed to provide
 
 ### Performance
 
-_Tested with_\
-_OS: Windows 11_\
-_CPU: Intel i7-8750H @ 2.2GHz 6 core_
+Tested while GUI is open and spamming keys (default state)
 
-|                | MechSharp   | Mechvibes  | Mechvibes++ |
-|----------------|-------------|------------|-------------|
-| Installer size | __40 MB__   | 70 MB      | 70 MB       |
-| Actual size    | __< 90 MB__ | 160+ MB    | 160+ MB     |
-| Memory usage   | __60 MB__   | 90-110+ MB | 300+ MB     |
-| CPU usage      | __0-3%__    | 3-7%       | 3-10%       |
+OS: Windows 11 \
+CPU: Intel i7-8750H @ 2.2GHz 6 core
 
-👑 __Overall MechSharp__
+#### General
+
+|                | MechSharp     | Mechvibes | Mechvibes++ |
+|----------------|---------------|-----------|-------------|
+| Installer size | __40 MB__     | 70 MB     | 70 MB       |
+| Actual size    | __90 MB__     | 160+ MB   | 160+ MB     |
+
+#### Without mousepack
+
+|                | MechSharp    | Mechvibes |
+|----------------|--------------|-----------|
+| Memory usage   | __72-78 MB__ | 90-110 MB |
+| CPU usage      | __0-4%__     | 3-7%      |
+
+#### With mousepack
+
+|                | MechSharp    | Mechvibes++ |
+|----------------|--------------|-------------|
+| Memory usage   | __75-80 MB__ | 300+ MB     |
+| CPU usage      | __0-4%__     | 3-10%       |
+
+__👑 MechSharp__
 
 ### Features
 
@@ -55,18 +68,19 @@ _CPU: Intel i7-8750H @ 2.2GHz 6 core_
 | Random sound           | __v__                 | x                 | __v__       |
 | Mousepack support      | __v__                 | x                 | __v__       |
 
-👑 __Each have different sets of features depending on your needs, but I might say MechSharp__
-
-_*Linux and MacOS is now in experimental! For now you can compile it yourself_
+__👑 MechSharp for general use, Mechvibes or Mechvibes++ for creating your own soundpack__
 
 ### Backend
 
-|              | MechSharp     | Mechvibes     | Mechvibes++   |
-|--------------|---------------|---------------|---------------|
-| Audio api    | PortAudio     | Web Audio API | Web Audio API |
-| Audio codecs | CSCore Codecs | Web Audio API | Web Audio API |
-| Audio lib    | NAudio        | Howler        | Howler        |
-| GUI backend  | Avalonia      | Electron      | Electron      |
-| Key hook     | libuiohook    | iohook        | iohook        |
+|              | MechSharp              | Mechvibes     | Mechvibes++   |
+|--------------|------------------------|---------------|---------------|
+| Audio api    | PortAudio              | Web Audio API | Web Audio API |
+| Audio codecs | NAudio & CSCore        | Web Audio API | Web Audio API |
+| Audio lib    | NAudio & CSCore        | Howler        | Howler        |
+| GUI backend  | Avalonia               | Electron      | Electron      |
+| Key hook     | libuiohook             | iohook        | iohook        |
 
-* _CSCore and Web Audio API provide collection of codecs which mean it utilize many other codecs such MediaFoundation (windows only) and much more_
+
+## Cross-platform Compatibility
+
+_* Linux and MacOS is now in experimental! For now you can compile it yourself_

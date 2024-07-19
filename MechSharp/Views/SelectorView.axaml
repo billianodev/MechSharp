@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MechSharp.ViewModels"
+             x:Class="MechSharp.Views.SelectorView"
+             x:DataType="vm:AppViewModel">
+
+    <StackPanel>
+        <ComboBox IsEnabled="{Binding IsKeypackControlEnabled}"
+                  ItemsSource="{Binding SoundpackLoader.Keypacks}"
+                  SelectedItem="{Binding Keypack}"
+                  Margin="0,0,0,10"/>
+        <ComboBox IsEnabled="{Binding IsMousepackControlEnabled}"
+                  ItemsSource="{Binding SoundpackLoader.Mousepacks}"
+                  SelectedItem="{Binding Mousepack}"/>
+    </StackPanel>
+
+    <UserControl.Styles>
+        <Style Selector="ComboBox">
+            <Setter Property="Padding" Value="5,10,5,10"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="MaxDropDownHeight" Value="300"/>
+        </Style>
+    </UserControl.Styles>
+
+</UserControl>

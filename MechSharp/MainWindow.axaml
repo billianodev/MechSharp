@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:MechSharp.Views"
+        x:Class="MechSharp.MainWindow"
+        Title="MechSharp"
+        Width="400"
+        Height="600"
+        MinWidth="400"
+        MinHeight="600"
+        CanResize="False"
+        Icon="/Assets/icon.ico">
+
+    <DockPanel>
+        <views:MenuView DockPanel.Dock="Top"/>
+        <views:MainView/>
+    </DockPanel>
+
+</Window>
