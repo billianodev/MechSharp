@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using MechSharp.Core.Soundpacks.Defines;
+using MechSharp.Json;
 
 namespace MechSharp.Models;
 
@@ -15,10 +15,6 @@ public sealed class SoundpackData : SoundpackInfo
 
     public static bool TryLoad(SoundpackInfo info, [NotNullWhen(true)] out SoundpackData? result)
     {
-        return TryLoad(SoundpackDataJsonContext.Default.SoundpackData, info.Dir, out result);
+        return TryLoad(SoundpackInfoJsonSerializerContext.Default.SoundpackData, info.Dir, out result);
     }
 }
-
-[JsonSerializable(typeof(SoundpackData))]
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower, UseStringEnumConverter = true)]
-public partial class SoundpackDataJsonContext : JsonSerializerContext;

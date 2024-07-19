@@ -2,9 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using MechSharp.Core;
+using MechSharp.Json;
 
 namespace MechSharp.Models;
 
@@ -18,7 +18,7 @@ public class SoundpackInfo
 
     public static bool TryLoad(string dir, [NotNullWhen(true)] out SoundpackInfo? result)
     {
-        return TryLoad(SoundpackInfoJsonContext.Default.SoundpackInfo, dir, out result);
+        return TryLoad(SoundpackInfoJsonSerializerContext.Default.SoundpackInfo, dir, out result);
     }
 
     protected static bool TryLoad<T>(JsonTypeInfo<T> jsonTypeInfo, string dir, [NotNullWhen(true)] out T? result) where T : SoundpackInfo
@@ -56,7 +56,3 @@ public class SoundpackInfo
         return Name;
     }
 }
-
-[JsonSerializable(typeof(SoundpackInfo))]
-[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower, UseStringEnumConverter = true)]
-public partial class SoundpackInfoJsonContext : JsonSerializerContext;
