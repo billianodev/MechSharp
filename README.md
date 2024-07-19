@@ -27,7 +27,7 @@ If you had use Mechvibes or Mechvibes++ before, MechSharp is designed to provide
 
 ### Performance
 
-Tested while GUI is open and spamming keys (default state)
+Tested while GUI is open and spamming keys
 
 OS: Windows 11 \
 CPU: Intel i7-8750H @ 2.2GHz 6 core
@@ -43,15 +43,15 @@ CPU: Intel i7-8750H @ 2.2GHz 6 core
 
 |                | MechSharp    | Mechvibes |
 |----------------|--------------|-----------|
-| Memory usage   | __72-78 MB__ | 90-110 MB |
-| CPU usage      | __0-4%__     | 3-7%      |
+| Memory usage   | __55-65 MB__ | 90-110 MB |
+| CPU usage      | __0-1%__     | 3-7%      |
 
 #### With mousepack
 
 |                | MechSharp    | Mechvibes++ |
 |----------------|--------------|-------------|
-| Memory usage   | __75-80 MB__ | 300+ MB     |
-| CPU usage      | __0-4%__     | 3-10%       |
+| Memory usage   | __55-65 MB__ | 300+ MB     |
+| CPU usage      | __0-1%__     | 3-10%       |
 
 __👑 MechSharp__
 
