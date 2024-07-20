@@ -5,11 +5,11 @@
              x:DataType="vm:AppViewModel">
 
     <StackPanel>
-        <ComboBox IsEnabled="{Binding IsKeypackControlEnabled}"
+        <ComboBox IsEnabled="{Binding IsKeypackEnabled}"
                   ItemsSource="{Binding SoundpacksLoader.Keypacks}"
                   SelectedItem="{Binding Keypack}"
                   Margin="0,0,0,10"/>
-        <ComboBox IsEnabled="{Binding IsMousepackControlEnabled}"
+        <ComboBox IsEnabled="{Binding IsMousepackEnabled}"
                   ItemsSource="{Binding SoundpacksLoader.Mousepacks}"
                   SelectedItem="{Binding Mousepack}"/>
     </StackPanel>

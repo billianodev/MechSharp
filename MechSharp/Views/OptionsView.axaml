@@ -9,7 +9,7 @@
             <TextBlock Text="Keys Volume "/>
             <DockPanel>
                 <TextBlock Text="{Binding KeypackVolume, StringFormat={}{0:0%}}"/>
-                <Slider IsEnabled="{Binding IsKeypackControlEnabled}"
+                <Slider IsEnabled="{Binding IsKeypackEnabled}"
                         Value="{Binding KeypackVolume}"/>
             </DockPanel>
         </DockPanel>
@@ -17,38 +17,31 @@
             <TextBlock Text="Mouse Volume "/>
             <DockPanel>
                 <TextBlock Text="{Binding MousepackVolume, StringFormat={}{0:0%}}"/>
-                <Slider IsEnabled="{Binding IsMousepackControlEnabled}"
+                <Slider IsEnabled="{Binding IsMousepackEnabled}"
                         Value="{Binding MousepackVolume}"/>
             </DockPanel>
         </DockPanel>
         <DockPanel>
-            <TextBlock Text="Mute"/>
-            <CheckBox Name="MuteCheckBox"
-                      IsChecked="{Binding IsMuted}"/>
-        </DockPanel>
-        <DockPanel>
             <TextBlock Text="Keypack"/>
             <CheckBox Name="KeypackCheckBox"
-                      IsChecked="{Binding IsKeypackEnabled}"
-                      IsEnabled="{Binding !IsMuted}"/>
+                      IsChecked="{Binding IsKeypackEnabled}"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Key Up"/>
             <CheckBox Name="KeyUpCheckBox"
                       IsChecked="{Binding IsKeyUpEnabled}"
-                      IsEnabled="{Binding IsKeypackControlEnabled}"/>
+                      IsEnabled="{Binding IsKeypackEnabled}"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Random"/>
             <CheckBox Name="RandomCheckBox"
                       IsChecked="{Binding IsRandomEnabled}"
-                      IsEnabled="{Binding IsKeypackControlEnabled}"/>
+                      IsEnabled="{Binding IsKeypackEnabled}"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Mousepack"/>
             <CheckBox Name="MousepackCheckBox"
-                      IsChecked="{Binding IsMousepackEnabled}"
-                      IsEnabled="{Binding !IsMuted}"/>
+                      IsChecked="{Binding IsMousepackEnabled}"/>
         </DockPanel>
         <DockPanel>
             <TextBlock Text="Enable at Startup"/>

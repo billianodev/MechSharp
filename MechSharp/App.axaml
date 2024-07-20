@@ -15,9 +15,14 @@
 
     <TrayIcon.Icons>
         <TrayIcons>
-            <TrayIcon ToolTipText="MechSharp"
-                      Icon="/Assets/icon.ico"
-                      Command="{Binding ShowCommand}"/>
+            <TrayIcon ToolTipText="MechSharp" Icon="/Assets/icon.ico" Command="{Binding ShowCommand}">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="Show" Command="{Binding ShowCommand}"/>
+                        <NativeMenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
         </TrayIcons>
     </TrayIcon.Icons>
   

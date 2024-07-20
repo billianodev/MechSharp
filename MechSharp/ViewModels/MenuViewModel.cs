@@ -21,25 +21,25 @@ public partial class MenuViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private static Task OpenKeypacks()
-    {
-        return TopLevel?.Launcher.LaunchDirectoryAsync(SoundpacksLoader.KeypackCustomDirectory) ?? Task.CompletedTask;
-    }
-
-    [RelayCommand]
-    private static Task OpenMousepacks()
-    {
-        return TopLevel?.Launcher.LaunchDirectoryAsync(SoundpacksLoader.MousepackCustomDirectory) ?? Task.CompletedTask;
-    }
-
-    [RelayCommand]
-    private static void Refresh()
+    private static void RefreshSoundpacks()
     {
         if (App?.ViewModel is AppViewModel viewModel)
         {
             viewModel.Save();
             viewModel.Load();
         }
+    }
+
+    [RelayCommand]
+    private static Task OpenKeypacksFolder()
+    {
+        return TopLevel?.Launcher.LaunchDirectoryAsync(SoundpacksLoader.KeypackCustomDirectory) ?? Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private static Task OpenMousepacksFolder()
+    {
+        return TopLevel?.Launcher.LaunchDirectoryAsync(SoundpacksLoader.MousepackCustomDirectory) ?? Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -52,19 +52,19 @@ public partial class MenuViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private static Task OpenGitHub()
+    private static Task OpenGitHubLink()
     {
         return TopLevel?.Launcher.LaunchUriAsync(GitHubUri) ?? Task.CompletedTask;
     }
 
     [RelayCommand]
-    private static Task OpenKofi()
+    private static Task OpenKofiLink()
     {
         return TopLevel?.Launcher.LaunchUriAsync(KofiUri) ?? Task.CompletedTask;
     }
 
     [RelayCommand]
-    private static Task OpenMechvibes()
+    private static Task OpenMechvibesLink()
     {
         return TopLevel?.Launcher.LaunchUriAsync(MechvibesUri) ?? Task.CompletedTask;
     }

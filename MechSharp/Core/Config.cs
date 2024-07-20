@@ -3,12 +3,13 @@ using System.IO;
 using System.Text.Json;
 using MechSharp.Abstraction;
 using MechSharp.Json;
+using MechSharp.Models;
 using MechSharp.Utilities;
 using MechSharp.ViewModels;
 
 namespace MechSharp.Core;
 
-public sealed class Config : IConfig
+public sealed class Config : IConfig<string>
 {
     private static string Path { get; }
 
@@ -16,7 +17,6 @@ public sealed class Config : IConfig
     public string? Mousepack { get; set; }
     public float KeypackVolume { get; set; }
     public float MousepackVolume { get; set; }
-    public bool IsMuted { get; set; }
     public bool IsKeypackEnabled { get; set; }
     public bool IsKeyUpEnabled { get; set; }
     public bool IsRandomEnabled { get; set; }
@@ -27,7 +27,7 @@ public sealed class Config : IConfig
         Path = PathHelper.AppDataDir.Combine("Config.json");
     }
 
-    public static void Load(AppViewModel viewModel, SoundpacksLoader loader)
+    public static void Load(IConfig<SoundpackInfo> config, SoundpacksLoader loader)
     {
         try
         {
@@ -45,15 +45,14 @@ public sealed class Config : IConfig
                     return;
                 }
 
-                viewModel.Keypack = loader.Keypacks?.Find(result.Keypack);
-                viewModel.Mousepack = loader.Mousepacks?.Find(result.Mousepack);
-                viewModel.KeypackVolume = result.KeypackVolume;
-                viewModel.MousepackVolume = result.MousepackVolume;
-                viewModel.IsMuted = result.IsMuted;
-                viewModel.IsKeypackEnabled = result.IsKeypackEnabled;
-                viewModel.IsKeyUpEnabled = result.IsKeyUpEnabled;
-                viewModel.IsRandomEnabled = result.IsRandomEnabled;
-                viewModel.IsMousepackEnabled = result.IsMousepackEnabled;
+                config.Keypack = loader.Keypacks?.Find(result.Keypack);
+                config.Mousepack = loader.Mousepacks?.Find(result.Mousepack);
+                config.KeypackVolume = result.KeypackVolume;
+                config.MousepackVolume = result.MousepackVolume;
+                config.IsKeypackEnabled = result.IsKeypackEnabled;
+                config.IsKeyUpEnabled = result.IsKeyUpEnabled;
+                config.IsRandomEnabled = result.IsRandomEnabled;
+                config.IsMousepackEnabled = result.IsMousepackEnabled;
             }
         }
         catch (Exception ex)
@@ -70,7 +69,6 @@ public sealed class Config : IConfig
             Mousepack = viewModel.Mousepack?.Dir,
             KeypackVolume = viewModel.KeypackVolume,
             MousepackVolume = viewModel.MousepackVolume,
-            IsMuted = viewModel.IsMuted,
             IsKeypackEnabled = viewModel.IsKeypackEnabled,
             IsKeyUpEnabled = viewModel.IsKeyUpEnabled,
             IsRandomEnabled = viewModel.IsRandomEnabled,

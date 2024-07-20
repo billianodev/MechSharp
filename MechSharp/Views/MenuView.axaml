@@ -6,16 +6,16 @@
 
     <Menu>
         <MenuItem Header="File">
-            <MenuItem Header="Refresh Soundpacks" Command="{Binding RefreshCommand}"/>
-            <MenuItem Header="Open Keypacks Folder" Command="{Binding OpenKeypacksCommand}"/>
-            <MenuItem Header="Open Mousepacks Folder" Command="{Binding OpenMousepacksCommand}"/>
+            <MenuItem Header="Refresh Soundpacks" Command="{Binding RefreshSoundpacksCommand}"/>
+            <MenuItem Header="Open Keypacks Folder" Command="{Binding OpenKeypacksFolderCommand}"/>
+            <MenuItem Header="Open Mousepacks Folder" Command="{Binding OpenMousepacksFolderCommand}"/>
             <Separator/>
             <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
         </MenuItem>
         <MenuItem Header="Help">
-            <MenuItem Header="GitHub" Command="{Binding OpenGitHubCommand}"/>
-            <MenuItem Header="Buy me a coffee" Command="{Binding OpenKofiCommand}"/>
-            <MenuItem Header="Mechvibes" Command="{Binding OpenMechvibesCommand}"/>
+            <MenuItem Header="GitHub" Command="{Binding OpenGitHubLinkCommand}"/>
+            <MenuItem Header="Buy me a coffee" Command="{Binding OpenKofiLinkCommand}"/>
+            <MenuItem Header="Mechvibes" Command="{Binding OpenMechvibesLinkCommand}"/>
         </MenuItem>
     </Menu>
 

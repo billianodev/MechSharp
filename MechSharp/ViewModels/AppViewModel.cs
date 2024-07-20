@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Billiano.AutoLaunch;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,8 +10,12 @@ using MechSharp.Models;
 
 namespace MechSharp.ViewModels;
 
-public partial class AppViewModel : ViewModelBase, IConfig
+public partial class AppViewModel : ViewModelBase, IConfig<SoundpackInfo>
 {
+    private readonly AutoLaunchManager _autoLaunchManager;
+    private readonly MechPlayer _mechPlayer;
+    private readonly object _lockObject;
+
     [ObservableProperty]
     private SoundpackInfo? _keypack;
 
@@ -24,12 +29,6 @@ public partial class AppViewModel : ViewModelBase, IConfig
     private float _mousepackVolume = 1f;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsKeypackControlEnabled))]
-    [NotifyPropertyChangedFor(nameof(IsMousepackControlEnabled))]
-    private bool _isMuted;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsKeypackControlEnabled))]
     private bool _isKeypackEnabled = true;
 
     [ObservableProperty]
@@ -39,7 +38,6 @@ public partial class AppViewModel : ViewModelBase, IConfig
     private bool _isRandomEnabled = true;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsMousepackControlEnabled))]
     private bool _isMousepackEnabled = true;
 
     public bool IsEnableAtStartup
@@ -48,16 +46,8 @@ public partial class AppViewModel : ViewModelBase, IConfig
         set => _autoLaunchManager.Set(value);
     }
 
-    public bool IsKeypackControlEnabled => !IsMuted && IsKeypackEnabled;
-    public bool IsMousepackControlEnabled => !IsMuted && IsMousepackEnabled;
-
     public InputManager InputManager { get; }
     public SoundpacksLoader SoundpacksLoader { get; }
-
-    private readonly AutoLaunchManager _autoLaunchManager;
-    private readonly MechPlayer _mechPlayer;
-
-    private readonly object _lockObject = new();
 
     public AppViewModel()
     {
@@ -66,6 +56,7 @@ public partial class AppViewModel : ViewModelBase, IConfig
 
         _autoLaunchManager = new AutoLaunchManager();
         _mechPlayer = new MechPlayer(this);
+        _lockObject = new object();
 
         if (Design.IsDesignMode)
         {
@@ -105,13 +96,7 @@ public partial class AppViewModel : ViewModelBase, IConfig
             return;
         }
 
-        if (IsMuted || !IsKeypackEnabled)
-        {
-            _mechPlayer.LoadKeypack(null, IsKeyUpEnabled);
-            return;
-        }
-
-        _mechPlayer.LoadKeypack(Keypack, IsKeyUpEnabled);
+        _mechPlayer.LoadKeypack(IsKeypackEnabled ? Keypack : null, IsKeyUpEnabled);
     }
 
     private void UpdateMousepack()
@@ -121,19 +106,22 @@ public partial class AppViewModel : ViewModelBase, IConfig
             return;
         }
 
-        if (IsMuted || !IsMousepackEnabled)
-        {
-            _mechPlayer.LoadMousepack(null);
-            return;
-        }
-
-        _mechPlayer.LoadMousepack(Mousepack);
+        _mechPlayer.LoadMousepack(IsMousepackEnabled ? Mousepack : null);
     }
 
     [RelayCommand]
     private static void Show()
     {
         TopLevel?.Show();
+    }
+
+    [RelayCommand]
+    private static void Exit()
+    {
+        if (App?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.TryShutdown();
+        }
     }
 
     partial void OnKeypackChanged(SoundpackInfo? value)
@@ -143,12 +131,6 @@ public partial class AppViewModel : ViewModelBase, IConfig
 
     partial void OnMousepackChanged(SoundpackInfo? value)
     {
-        UpdateMousepack();
-    }
-
-    partial void OnIsMutedChanged(bool value)
-    {
-        UpdateKeypack();
         UpdateMousepack();
     }
 

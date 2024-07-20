@@ -1,5 +1,11 @@
 ﻿namespace MechSharp.Abstraction;
 
+public interface IConfig<T> : IConfig
+{
+    public T? Keypack { get; set; }
+    public T? Mousepack { get; set; }
+}
+
 public interface IConfig
 {
     public float KeypackVolume { get; set; }
