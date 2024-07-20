@@ -1,5 +1,4 @@
-﻿using System;
-using Billiano.Audio.FireForget;
+﻿using Billiano.Audio.FireForget;
 using Billiano.Audio.PortAudio;
 using MechSharp.Abstraction;
 using MechSharp.Core.Soundpacks;
@@ -10,31 +9,34 @@ using SharpHook.Native;
 
 namespace MechSharp.Core;
 
-public sealed class MechPlayer : IInputReceiver, IDisposable
+public sealed class MechPlayer : IInputReceiver
 {
-    private readonly PortAudioOut playerBackend;
-    private readonly FireForgetPlayer player;
+    private readonly PortAudioOut _playerBackend;
+    private readonly FireForgetPlayer _player;
 
-    private readonly IRuntimeConfig config;
+    private readonly IRuntimeConfig _config;
 
-    private Soundpack? keypack;
-    private Soundpack? mousepack;
+    private Soundpack? _keypack;
+    private Soundpack? _mousepack;
 
-    public MechPlayer(IRuntimeConfig config, InputManager input)
+    public MechPlayer(IRuntimeConfig config)
     {
-        playerBackend = new PortAudioOut();
-        player = new FireForgetPlayer(playerBackend, new WaveFormat(44100, 1));
+        _playerBackend = new PortAudioOut();
+        _player = new ResamplingFireForgetPlayer(_playerBackend, WaveFormat.CreateIeeeFloatWaveFormat(44100, 1));
 
-        this.config = config;
+        _config = config;
+    }
 
-        input.Register(this);
+    public void Run()
+    {
+        _player.Run();
     }
 
     public void LoadKeypack(SoundpackInfo? info, bool keyUp)
     {
         if (info is null)
         {
-            keypack = null;
+            _keypack = null;
             return;
         }
 
@@ -42,7 +44,7 @@ public sealed class MechPlayer : IInputReceiver, IDisposable
         {
             if (Soundpack.TryLoadKeypack(data, keyUp, out var keypack))
             {
-                this.keypack = keypack;
+                _keypack = keypack;
             }
         }
     }
@@ -51,7 +53,7 @@ public sealed class MechPlayer : IInputReceiver, IDisposable
     {
         if (info is null)
         {
-            mousepack = null;
+            _mousepack = null;
             return;
         }
 
@@ -59,70 +61,64 @@ public sealed class MechPlayer : IInputReceiver, IDisposable
         {
             if (Soundpack.TryLoadMousepack(data, out var mousepack))
             {
-                this.mousepack = mousepack;
+                _mousepack = mousepack;
             }
         }
     }
 
-    public void Dispose()
-    {
-        player.Dispose();
-        playerBackend.Dispose();
-    }
-
     public void OnKeyPressed(InputManager sender, KeyCode keyCode)
     {
-        if (keypack is null)
+        if (_keypack is null)
         {
             return;
         }
 
-        var code = MechvibesKey.Map(keyCode, config.IsRandomEnabled);
-        if (keypack.Defines.TryGetDownSound(code, out var result))
+        var code = MechvibesKey.Map(keyCode, _config.IsRandomEnabled);
+        if (_keypack.Defines.TryGetDownSound(code, out var result))
         {
-            player.Play(result, config.KeypackVolume);
+            _player.Play(result, _config.KeypackVolume);
         }
     }
 
     public void OnKeyReleased(InputManager sender, KeyCode keyCode)
     {
-        if (keypack is null)
+        if (_keypack is null)
         {
             return;
         }
 
-        var code = MechvibesKey.Map(keyCode, config.IsRandomEnabled);
-        if (keypack.Defines.TryGetUpSound(code, out var result))
+        var code = MechvibesKey.Map(keyCode, _config.IsRandomEnabled);
+        if (_keypack.Defines.TryGetUpSound(code, out var result))
         {
-            player.Play(result, config.KeypackVolume);
+            _player.Play(result, _config.KeypackVolume);
         }
     }
 
     public void OnMousePressed(InputManager sender, MouseButton mouseButton)
     {
-        if (mousepack is null)
+        if (_mousepack is null)
         {
             return;
         }
 
         var code = MousevibesButton.Map(mouseButton);
-        if (mousepack.Defines.TryGetDownSound(code, out var result))
+        if (_mousepack.Defines.TryGetDownSound(code, out var result))
         {
-            player.Play(result, config.MousepackVolume);
+            _player.Play(result, _config.MousepackVolume);
         }
     }
 
     public void OnMouseReleased(InputManager sender, MouseButton mouseButton)
     {
-        if (mousepack is null)
+        if (_mousepack is null)
         {
             return;
         }
 
         var code = MousevibesButton.Map(mouseButton);
-        if (mousepack.Defines.TryGetUpSound(code, out var result))
+        if (_mousepack.Defines.TryGetUpSound(code, out var result))
         {
-            player.Play(result, config.MousepackVolume);
+            _player.Play(result, _config.MousepackVolume);
         }
     }
 }

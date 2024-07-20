@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json;
 using Billiano.Audio.FireForget;
+using MechSharp.Abstraction;
 using MechSharp.Json;
 using MechSharp.Models;
 
@@ -18,7 +19,7 @@ public sealed class MousepackDefinesMulti(SoundpackData data) : SoundpackDefines
             yield break;
         }
 
-        var caches = new Dictionary<int, (string?, string?)>();
+        var caches = new Dictionary<int, SoundpackDownUpSource>();
 
         foreach ((var id, var file) in defines)
         {
@@ -26,54 +27,52 @@ public sealed class MousepackDefinesMulti(SoundpackData data) : SoundpackDefines
             {
                 if (!caches.TryGetValue(numId, out var result))
                 {
-                    caches.Add(numId, result = (null, null));
+                    caches.Add(numId, result = new SoundpackDownUpSource());
                 }
 
                 if (id.StartsWith('0'))
                 {
-                    result.Item2 = file;
+                    result.Up = file;
                 }
                 else
                 {
-                    result.Item1 = file;
+                    result.Down = file;
                 }
-
-                caches[numId] = result;
             }
         }
 
-        foreach ((var id, (var down, var up)) in caches)
+        foreach ((var id, var info) in caches)
         {
-            IFireForgetSource? downSource = null;
-            IFireForgetSource? upSource = null;
+            WaveCache? down = null;
+            WaveCache? up = null;
 
-            if (down is not null)
+            if (info.Down is not null)
             {
-                var path = Path.Combine(data.Dir, down);
+                var path = Path.Combine(data.Dir, info.Down);
 
                 if (File.Exists(path))
                 {
                     using (var reader = SoundpacksLoader.Codecs.GetCodec(path))
                     {
-                        downSource = reader.ToFireForgetSource();
+                        down = reader.ToWaveCache();
                     }
                 }
             }
 
-            if (up is not null)
+            if (info.Up is not null)
             {
-                var path = Path.Combine(data.Dir, up);
+                var path = Path.Combine(data.Dir, info.Up);
 
                 if (File.Exists(path))
                 {
                     using (var reader = SoundpacksLoader.Codecs.GetCodec(path))
                     {
-                        upSource = reader.ToFireForgetSource();
+                        up = reader.ToWaveCache();
                     }
                 }
             }
 
-            var sound = new SoundpackUpDownSource(downSource, upSource);
+            var sound = new SoundpackDownUp(down, up);
             yield return new SoundpackDefine(id, sound);
         }
     }

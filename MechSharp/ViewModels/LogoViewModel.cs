@@ -7,7 +7,7 @@ namespace MechSharp.ViewModels;
 public partial class LogoViewModel : ViewModelBase, IInputReceiver
 {
     [ObservableProperty]
-    private bool isKeyPressed;
+    private bool _isKeyPressed;
 
     public LogoViewModel()
     {

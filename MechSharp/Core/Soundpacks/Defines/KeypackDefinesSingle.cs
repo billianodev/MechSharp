@@ -2,8 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Billiano.Audio.CSCoreSupport;
+using Billiano.Audio;
 using Billiano.Audio.FireForget;
+using MechSharp.Abstraction;
 using MechSharp.Json;
 using MechSharp.Models;
 using MechSharp.Utilities;
@@ -28,10 +29,12 @@ public sealed class KeypackDefinesSingle(SoundpackData data, bool keyUp) : Sound
             yield break;
         }
 
-        var caches = new Dictionary<SoundpackDefinesRange, SoundpackUpDownSource>();
+        var caches = new Dictionary<SoundpackDefinesRange, SoundpackDownUp>();
 
-        using (var reader = SoundpacksLoader.Codecs.GetCodec(path).ToWaveProvider())
+        using (var reader = SoundpacksLoader.Codecs.GetCodec(path))
         {
+            var buffer = reader.ReadToEnd();
+
             foreach (var range in defines.Values.Distinct())
             {
                 if (range is null)
@@ -39,18 +42,20 @@ public sealed class KeypackDefinesSingle(SoundpackData data, bool keyUp) : Sound
                     continue;
                 }
 
-                var slice = WaveHelper.Cut(reader, range.Start, range.Length);
+                var slice = WaveHelper.Cut(buffer, reader.WaveFormat, range.Start, range.Length);
 
-                SoundpackUpDownSource sound;
+                SoundpackDownUp sound;
                 if (keyUp)
                 {
-                    WaveHelper.Split(slice, out var down, out var up);
-                    sound = new SoundpackUpDownSource(down.ToFireForgetSource(), up.ToFireForgetSource());
+                    WaveHelper.Split(slice, reader.WaveFormat, out var first, out var second);
+                    var down = new WaveCache(first, reader.WaveFormat);
+                    var up = new WaveCache(second, reader.WaveFormat);
+                    sound = new SoundpackDownUp(down, up);
                 }
                 else
                 {
-                    var source = slice.ToFireForgetSource();
-                    sound = new SoundpackUpDownSource(source);
+                    var source = new WaveCache(slice, reader.WaveFormat);
+                    sound = new SoundpackDownUp(source);
                 }
 
                 caches.Add(range, sound);

@@ -6,11 +6,11 @@
 
     <StackPanel>
         <ComboBox IsEnabled="{Binding IsKeypackControlEnabled}"
-                  ItemsSource="{Binding SoundpackLoader.Keypacks}"
+                  ItemsSource="{Binding SoundpacksLoader.Keypacks}"
                   SelectedItem="{Binding Keypack}"
                   Margin="0,0,0,10"/>
         <ComboBox IsEnabled="{Binding IsMousepackControlEnabled}"
-                  ItemsSource="{Binding SoundpackLoader.Mousepacks}"
+                  ItemsSource="{Binding SoundpacksLoader.Mousepacks}"
                   SelectedItem="{Binding Mousepack}"/>
     </StackPanel>
 

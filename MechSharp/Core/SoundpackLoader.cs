@@ -17,10 +17,10 @@ public sealed partial class SoundpacksLoader : ObservableObject
     public static string MousepackCustomDirectory { get; }
 
     [ObservableProperty]
-    public SoundpackCollection? keypacks;
+    private SoundpackCollection? _keypacks;
 
     [ObservableProperty]
-    public SoundpackCollection? mousepacks;
+    private SoundpackCollection? _mousepacks;
 
     static SoundpacksLoader()
     {

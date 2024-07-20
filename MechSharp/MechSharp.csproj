@@ -41,9 +41,9 @@
         <PackageReference Include="Avalonia.Desktop" Version="11.1.0-rc2" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-rc2" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-rc2" />
-        <PackageReference Include="Billiano.Audio" Version="0.3.1-beta" />
-        <PackageReference Include="Billiano.Audio.Codecs.CSCore" Version="0.1.0-beta" />
-        <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.2-beta" />
+        <PackageReference Include="Billiano.Audio" Version="0.3.4-beta" />
+        <PackageReference Include="Billiano.Audio.Codecs.CSCore" Version="0.1.1-beta" />
+        <PackageReference Include="Billiano.Audio.PortAudio" Version="0.1.3-beta" />
         <PackageReference Include="Billiano.AutoLaunch" Version="0.0.2-beta" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="SharpHook" Version="5.3.7" />

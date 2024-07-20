@@ -2,7 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using Billiano.Audio;
 using Billiano.Audio.FireForget;
+using MechSharp.Abstraction;
 using MechSharp.Json;
 using MechSharp.Models;
 using MechSharp.Utilities;
@@ -20,7 +22,7 @@ public sealed class KeypackDefinesMulti(SoundpackData data, bool keyUp) : Soundp
             yield break;
         }
 
-        var caches = new Dictionary<string, SoundpackUpDownSource>();
+        var caches = new Dictionary<string, SoundpackDownUp>();
 
         foreach (var file in defines.Values.Distinct())
         {
@@ -38,16 +40,20 @@ public sealed class KeypackDefinesMulti(SoundpackData data, bool keyUp) : Soundp
 
             using (var reader = SoundpacksLoader.Codecs.GetCodec(path))
             {
-                SoundpackUpDownSource sound;
+                var buffer = reader.ReadToEnd();
+
+                SoundpackDownUp sound;
                 if (keyUp)
                 {
-                    WaveHelper.Split(reader, out var down, out var up);
-                    sound = new SoundpackUpDownSource(down.ToWaveCache(), up.ToWaveCache());
+                    WaveHelper.Split(buffer, reader.WaveFormat, out var first, out var second);
+                    var down = new WaveCache(first, reader.WaveFormat);
+                    var up = new WaveCache(second, reader.WaveFormat);
+                    sound = new SoundpackDownUp(down, up);
                 }
                 else
                 {
-                    var source = reader.ToWaveCache();
-                    sound = new SoundpackUpDownSource(source);
+                    var source = new WaveCache(buffer, reader.WaveFormat);
+                    sound = new SoundpackDownUp(source);
                 }
 
                 caches.Add(file, sound);

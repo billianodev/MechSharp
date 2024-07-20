@@ -12,74 +12,81 @@ namespace MechSharp.ViewModels;
 public partial class AppViewModel : ViewModelBase, IConfig
 {
     [ObservableProperty]
-    private SoundpackInfo? keypack;
+    private SoundpackInfo? _keypack;
 
     [ObservableProperty]
-    private SoundpackInfo? mousepack;
+    private SoundpackInfo? _mousepack;
 
     [ObservableProperty]
-    private float keypackVolume = 1f;
+    private float _keypackVolume = 1f;
 
     [ObservableProperty]
-    private float mousepackVolume = 1f;
+    private float _mousepackVolume = 1f;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsKeypackControlEnabled))]
     [NotifyPropertyChangedFor(nameof(IsMousepackControlEnabled))]
-    private bool isMuted;
+    private bool _isMuted;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsKeypackControlEnabled))]
-    private bool isKeypackEnabled = true;
+    private bool _isKeypackEnabled = true;
 
     [ObservableProperty]
-    private bool isKeyUpEnabled = true;
+    private bool _isKeyUpEnabled = true;
 
     [ObservableProperty]
-    private bool isRandomEnabled = true;
+    private bool _isRandomEnabled = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsMousepackControlEnabled))]
-    private bool isMousepackEnabled = true;
+    private bool _isMousepackEnabled = true;
 
     public bool IsEnabledAtStartup
     {
-        get => AutoLaunchManager.Get();
-        set => AutoLaunchManager.Set(value);
+        get => _autoLaunchManager.Get();
+        set => _autoLaunchManager.Set(value);
     }
 
     public bool IsKeypackControlEnabled => !IsMuted && IsKeypackEnabled;
     public bool IsMousepackControlEnabled => !IsMuted && IsMousepackEnabled;
 
-    public AutoLaunchManager AutoLaunchManager { get; }
-    public SoundpacksLoader SoundpackLoader { get; }
     public InputManager InputManager { get; }
-    public MechPlayer MechPlayer { get; }
+    public SoundpacksLoader SoundpacksLoader { get; }
 
-    private readonly object lockObject = new();
+    private readonly AutoLaunchManager _autoLaunchManager;
+    private readonly MechPlayer _mechPlayer;
+
+    private readonly object _lockObject = new();
 
     public AppViewModel()
     {
-        AutoLaunchManager = new AutoLaunchManager();
-        SoundpackLoader = new SoundpacksLoader();
         InputManager = new InputManager();
-        MechPlayer = new MechPlayer(this, InputManager);
+        SoundpacksLoader = new SoundpacksLoader();
+
+        _autoLaunchManager = new AutoLaunchManager();
+        _mechPlayer = new MechPlayer(this);
 
         if (Design.IsDesignMode)
         {
             return;
         }
 
+        InputManager.Register(_mechPlayer);
+        InputManager.Run();
+
+        _mechPlayer.Run();
+
         Load();
     }
 
     public void Load()
     {
-        SoundpackLoader.Load();
+        SoundpacksLoader.Load();
 
-        lock (lockObject)
+        lock (_lockObject)
         {
-            Config.Load(this, SoundpackLoader);
+            Config.Load(this, SoundpacksLoader);
         }
 
         UpdateKeypack();
@@ -93,34 +100,34 @@ public partial class AppViewModel : ViewModelBase, IConfig
 
     private void UpdateKeypack()
     {
-        if (Monitor.IsEntered(lockObject))
+        if (Monitor.IsEntered(_lockObject))
         {
             return;
         }
 
         if (IsMuted || !IsKeypackEnabled)
         {
-            MechPlayer.LoadKeypack(null, IsKeyUpEnabled);
+            _mechPlayer.LoadKeypack(null, IsKeyUpEnabled);
             return;
         }
 
-        MechPlayer.LoadKeypack(Keypack, IsKeyUpEnabled);
+        _mechPlayer.LoadKeypack(Keypack, IsKeyUpEnabled);
     }
 
     private void UpdateMousepack()
     {
-        if (Monitor.IsEntered(lockObject))
+        if (Monitor.IsEntered(_lockObject))
         {
             return;
         }
 
         if (IsMuted || !IsMousepackEnabled)
         {
-            MechPlayer.LoadMousepack(null);
+            _mechPlayer.LoadMousepack(null);
             return;
         }
 
-        MechPlayer.LoadMousepack(Mousepack);
+        _mechPlayer.LoadMousepack(Mousepack);
     }
 
     [RelayCommand]

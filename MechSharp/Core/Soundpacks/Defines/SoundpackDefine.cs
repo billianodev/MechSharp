@@ -1,3 +1,5 @@
-﻿namespace MechSharp.Core.Soundpacks;
+﻿using MechSharp.Core.Soundpacks.Defines;
 
-public record SoundpackDefine(int Id, SoundpackUpDownSource Source);
+namespace MechSharp.Core.Soundpacks;
+
+public record SoundpackDefine(int Id, SoundpackDownUp Source);

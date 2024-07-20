@@ -1,57 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SharpHook;
 using SharpHook.Native;
 
 namespace MechSharp.Core;
 
-public sealed class InputManager : IDisposable
+public sealed class InputManager
 {
-    private readonly SimpleGlobalHook hook;
-    private readonly HashSet<KeyCode> pressedKeys;
-    private readonly List<IInputReceiver> receivers;
+    private readonly SimpleGlobalHook _hook;
+    private readonly HashSet<KeyCode> _pressedKeys;
+    private readonly List<IInputReceiver> _receivers;
 
-    public IReadOnlyCollection<KeyCode> PressedKeys => pressedKeys;
+    public IReadOnlyCollection<KeyCode> PressedKeys => _pressedKeys;
 
     public InputManager()
     {
-        hook = new SimpleGlobalHook(true);
-        hook.KeyPressed += Hook_KeyPressed;
-        hook.KeyReleased += Hook_KeyReleased;
-        hook.MousePressed += Hook_MousePressed;
-        hook.MouseReleased += Hook_MouseReleased;
+        _hook = new SimpleGlobalHook(true);
+        _hook.KeyPressed += Hook_KeyPressed;
+        _hook.KeyReleased += Hook_KeyReleased;
+        _hook.MousePressed += Hook_MousePressed;
+        _hook.MouseReleased += Hook_MouseReleased;
 
-        pressedKeys = [];
-        receivers = [];
-
-        hook.RunAsync();
+        _pressedKeys = [];
+        _receivers = [];
     }
 
     public InputManager(params IInputReceiver[] receiver) : this()
     {
-        receivers.AddRange(receiver);
+        _receivers.AddRange(receiver);
+    }
+
+    public void Run()
+    {
+        _hook.RunAsync();
     }
 
     public void Register(IInputReceiver receiver)
     {
-        receivers.Add(receiver);
-    }
-
-    public void Reset()
-    {
-        pressedKeys.Clear();
-    }
-
-    public void Dispose()
-    {
-        hook.Dispose();
+        _receivers.Add(receiver);
     }
 
     private void Hook_KeyPressed(object? sender, KeyboardHookEventArgs e)
     {
-        if (pressedKeys.Add(e.Data.KeyCode))
+        if (_pressedKeys.Add(e.Data.KeyCode))
         {
-            foreach (var receiver in receivers)
+            foreach (var receiver in _receivers)
             {
                 receiver.OnKeyPressed(this, e.Data.KeyCode);
             }
@@ -60,9 +52,9 @@ public sealed class InputManager : IDisposable
 
     private void Hook_KeyReleased(object? sender, KeyboardHookEventArgs e)
     {
-        if (pressedKeys.Remove(e.Data.KeyCode))
+        if (_pressedKeys.Remove(e.Data.KeyCode))
         {
-            foreach (var receiver in receivers)
+            foreach (var receiver in _receivers)
             {
                 receiver.OnKeyReleased(this, e.Data.KeyCode);
             }
@@ -71,7 +63,7 @@ public sealed class InputManager : IDisposable
 
     private void Hook_MousePressed(object? sender, MouseHookEventArgs e)
     {
-        foreach (var receiver in receivers)
+        foreach (var receiver in _receivers)
         {
             receiver.OnMousePressed(this, e.Data.Button);
         }
@@ -79,7 +71,7 @@ public sealed class InputManager : IDisposable
 
     private void Hook_MouseReleased(object? sender, MouseHookEventArgs e)
     {
-        foreach (var receiver in receivers)
+        foreach (var receiver in _receivers)
         {
             receiver.OnMouseReleased(this, e.Data.Button);
         }

@@ -8,21 +8,11 @@ namespace MechSharp.Core.Soundpacks;
 
 public class SoundpackCollection : IEnumerable
 {
-    private readonly SoundpackInfo[] soundpacks;
+    private readonly SoundpackInfo[] _soundpacks;
 
     public SoundpackCollection(params string[] dir)
     {
-        soundpacks = LoadAll(dir).ToArray();
-    }
-
-    public SoundpackInfo? Find(string? dir)
-    {
-        if (dir is null)
-        {
-            return null;
-        }
-
-        return soundpacks.FirstOrDefault(x => x.Dir == dir);
+        _soundpacks = LoadAll(dir).ToArray();
     }
 
     private static IEnumerable<SoundpackInfo> LoadAll(params string[] directories)
@@ -37,8 +27,18 @@ public class SoundpackCollection : IEnumerable
         }
     }
 
+    public SoundpackInfo? Find(string? dir)
+    {
+        if (dir is null)
+        {
+            return null;
+        }
+
+        return _soundpacks.FirstOrDefault(x => x.Dir == dir);
+    }
+
     public IEnumerator GetEnumerator()
     {
-        return soundpacks.GetEnumerator();
+        return _soundpacks.GetEnumerator();
     }
 }
