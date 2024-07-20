@@ -14,12 +14,12 @@ public sealed class MechPlayer : IInputReceiver
     private readonly PortAudioOut _playerBackend;
     private readonly FireForgetPlayer _player;
 
-    private readonly IRuntimeConfig _config;
+    private readonly IConfig _config;
 
     private Soundpack? _keypack;
     private Soundpack? _mousepack;
 
-    public MechPlayer(IRuntimeConfig config)
+    public MechPlayer(IConfig config)
     {
         _playerBackend = new PortAudioOut();
         _player = new ResamplingFireForgetPlayer(_playerBackend, WaveFormat.CreateIeeeFloatWaveFormat(44100, 1));

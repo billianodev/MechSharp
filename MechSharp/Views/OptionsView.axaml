@@ -53,13 +53,11 @@
         <DockPanel>
             <TextBlock Text="Enable at Startup"/>
             <CheckBox Name="StartupCheckBox"
-                      IsChecked="{Binding IsEnabledAtStartup}"/>
+                      IsChecked="{Binding IsEnableAtStartup}"/>
         </DockPanel>
     </StackPanel>
 
     <UserControl.Styles>
-        <Style Selector="StackPanel > DockPanel">
-        </Style>
         <Style Selector="StackPanel > DockPanel > TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="130"/>

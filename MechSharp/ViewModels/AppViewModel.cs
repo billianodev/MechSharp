@@ -42,7 +42,7 @@ public partial class AppViewModel : ViewModelBase, IConfig
     [NotifyPropertyChangedFor(nameof(IsMousepackControlEnabled))]
     private bool _isMousepackEnabled = true;
 
-    public bool IsEnabledAtStartup
+    public bool IsEnableAtStartup
     {
         get => _autoLaunchManager.Get();
         set => _autoLaunchManager.Set(value);
@@ -131,7 +131,7 @@ public partial class AppViewModel : ViewModelBase, IConfig
     }
 
     [RelayCommand]
-    private static void Focus()
+    private static void Show()
     {
         TopLevel?.Show();
     }

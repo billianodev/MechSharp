@@ -4,7 +4,7 @@
              x:Class="MechSharp.Views.LogoView"
              x:DataType="vm:LogoViewModel">
     
-    <Border Name="Outer" Classes.down="{Binding IsKeyPressed}">
+    <Border Name="Outer" Classes.Down="{Binding IsKeyPressed}">
         <Border Name="Inner">
             <Viewbox>
                 <TextBlock Text="MechSharp"/>
@@ -21,7 +21,7 @@
             <Setter Property="Height" Value="80"/>
             <Setter Property="Padding" Value="0,1,0,-1"/>
         </Style>
-        <Style Selector="Border#Outer.down">
+        <Style Selector="Border#Outer.Down">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="0,3,0,0"/>
         </Style>

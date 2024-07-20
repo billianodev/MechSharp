@@ -4,19 +4,21 @@
              x:Class="MechSharp.App"
              x:DataType="vm:AppViewModel">
 
- <Application.Styles>
-    <FluentTheme>
-      <FluentTheme.Palettes>
-        <ColorPaletteResources x:Key="Light" Accent="Red"/>
-        <ColorPaletteResources x:Key="Dark" Accent="DarkRed"/>
-      </FluentTheme.Palettes>
-    </FluentTheme>
-  </Application.Styles>
+    <Application.Styles>
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="Red"/>
+                <ColorPaletteResources x:Key="Dark" Accent="DarkRed"/>
+            </FluentTheme.Palettes>
+        </FluentTheme>
+    </Application.Styles>
 
-  <TrayIcon.Icons>
-    <TrayIcons>
-      <TrayIcon Icon="/Assets/icon.ico" Command="{Binding FocusCommand}"/>
-    </TrayIcons>
-  </TrayIcon.Icons>
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon ToolTipText="MechSharp"
+                      Icon="/Assets/icon.ico"
+                      Command="{Binding ShowCommand}"/>
+        </TrayIcons>
+    </TrayIcon.Icons>
   
 </Application>
